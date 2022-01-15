@@ -37,13 +37,15 @@ public final class LinkedList {
 
     public static Node insertAt(final Node rootOrNull, final int index, final int data) {
         // early return
-        if (index < 0)  // invalid index
+        if (index < 0)  {
             return rootOrNull;
-        if (index == 0) {
+        } else if (index == 0) {
             if (rootOrNull == null)
                 return new Node(data);
             else
                 return prepend(rootOrNull, data);
+        } else if (rootOrNull == null) {
+            return rootOrNull;
         }
 
         Node root = rootOrNull;
