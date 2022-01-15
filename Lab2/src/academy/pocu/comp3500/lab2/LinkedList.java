@@ -91,6 +91,10 @@ public final class LinkedList {
     public static int getIndexOf(final Node rootOrNull, final int data) {
         if (rootOrNull == null)
             return -1;
+//        if (rootOrNull.getNextOrNull() == null) {
+//            if (rootOrNull.getData() == data)
+//                return 0;
+//        }
 
         Node curr = rootOrNull;
         int index = 0;
@@ -102,7 +106,10 @@ public final class LinkedList {
             index++;
         }
 
-        return index;
+        if (curr.getData() == data)
+            return index;
+
+        return -1;
     }
 
     public static Node getOrNull(final Node rootOrNull, final int index) {
