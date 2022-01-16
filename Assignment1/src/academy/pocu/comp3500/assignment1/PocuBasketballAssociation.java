@@ -3,6 +3,8 @@ package academy.pocu.comp3500.assignment1;
 import academy.pocu.comp3500.assignment1.pba.Player;
 import academy.pocu.comp3500.assignment1.pba.GameStat;
 
+import static academy.pocu.comp3500.assignment1.BianarySearch.binarysearchPoint;
+
 public final class PocuBasketballAssociation {
     private PocuBasketballAssociation() {
     }
@@ -52,11 +54,13 @@ public final class PocuBasketballAssociation {
     }
 
     public static Player findPlayerPointsPerGame(final Player[] players, int targetPoints) {
-        return null;
+        int playerIndex = BianarySearch.binarysearchPoint(players, targetPoints);
+        return players[playerIndex];
     }
 
     public static Player findPlayerShootingPercentage(final Player[] players, int targetShootingPercentage) {
-        return null;
+        int playerIndex = BianarySearch.binarysearchShootingPercentage(players, targetShootingPercentage);
+        return players[playerIndex];
     }
 
     public static long find3ManDreamTeam(final Player[] players, final Player[] outPlayers, final Player[] scratch) {
