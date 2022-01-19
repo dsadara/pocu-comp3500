@@ -5,10 +5,16 @@ import academy.pocu.comp3500.assignment1.pba.Player;
 public class BianarySearch {
     public static int binarysearchRecursiveP(Player[] players, int l, int r, int value) {
         if (l > r) {    // 찾기 실패한 경우 - value와 가장 가까운 값을 반환
-            if (Math.abs(players[l].getPointsPerGame() - value) <= Math.abs(players[r].getPointsPerGame() - value))
+            if (r < 0) {    // r이 배열 범위의 왼쪽으로 벗어나면
                 return l;
-            else
+            } else if (l > players.length - 1) {    // l이 배열 범위의 오른쪽으로 벗어나면
                 return r;
+            } else {
+                if (Math.abs(players[l].getPointsPerGame() - value) <= Math.abs(players[r].getPointsPerGame() - value))
+                    return l;
+                else
+                    return r;
+            }
         }
 
         int m = (l + r) / 2;    // 내림
@@ -24,10 +30,16 @@ public class BianarySearch {
 
     public static int binarysearchRecursiveSP(Player[] players, int l, int r, int value) {
         if (l > r) {    // 찾기 실패한 경우 - value와 가장 가까운 값을 반환
-            if (Math.abs(players[l].getShootingPercentage() - value) <= Math.abs(players[r].getShootingPercentage() - value))
+            if (r < 0) {    // r이 배열 범위의 왼쪽으로 벗어나면
                 return l;
-            else
+            } else if (l > players.length - 1) {    // l이 배열 범위의 오른쪽으로 벗어나면
                 return r;
+            } else {
+                if (Math.abs(players[l].getShootingPercentage() - value) <= Math.abs(players[r].getShootingPercentage() - value))
+                    return l;
+                else
+                    return r;
+            }
         }
 
         int m = (l + r) / 2;    // 내림
@@ -42,11 +54,11 @@ public class BianarySearch {
     }
 
     public static int binarysearchPoint(Player[] players, int value) {
-        return binarysearchRecursiveP(players, 0, players.length, value);
+        return binarysearchRecursiveP(players, 0, players.length - 1, value);
     }
 
     public static int binarysearchShootingPercentage(Player[] players, int value) {
-        return binarysearchRecursiveSP(players, 0, players.length, value);
+        return binarysearchRecursiveSP(players, 0, players.length - 1, value);
     }
 
 //    public static void main(String[] args) {
