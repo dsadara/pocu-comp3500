@@ -9,8 +9,8 @@ public class HashTableStatic {
     }
 
     static boolean hasValue(String[] keys, int[] values, int value, int bucketSize) {
-        int hash_id = keys.hashCode();
-        int startIndex = hash_id % bucketSize;
+        int hashID = keys.hashCode();
+        int startIndex = hashID % bucketSize;
         if (startIndex < 0) {
             startIndex += bucketSize;
         }
@@ -30,12 +30,12 @@ public class HashTableStatic {
     }
 
     static boolean add(String[] keys, int[] values, String key, int value, int bucketSize) {
-        int hash_id = key.hashCode();
-        int start_index = hash_id % bucketSize;
-        if (start_index < 0) {
-            start_index += bucketSize;
+        int hashID = key.hashCode();
+        int stardIndex = hashID % bucketSize;
+        if (stardIndex < 0) {
+            stardIndex += bucketSize;
         }
-        int i = start_index;
+        int i = stardIndex;
 
         do {
             if (keys[i] == null || keys[i].equals(key) == true) {
@@ -50,18 +50,18 @@ public class HashTableStatic {
 //            }
 
             i = (i + 1) % bucketSize;
-        } while (i != start_index);
+        } while (i != stardIndex);
 
         return false;
     }
 
     static int get(String[] keys, int[] values, String key, int bucketSize) {
-        int hash_id = key.hashCode();
-        int start_index = hash_id % bucketSize;
-        if (start_index < 0) {
-            start_index += bucketSize;
+        int hashID = key.hashCode();
+        int stardIndex = hashID % bucketSize;
+        if (stardIndex < 0) {
+            stardIndex += bucketSize;
         }
-        int i = start_index;
+        int i = stardIndex;
         int value = Integer.MIN_VALUE;
 
         do {
@@ -73,7 +73,7 @@ public class HashTableStatic {
             }
 
             i = (i + 1) % bucketSize;
-        } while (i != start_index);
+        } while (i != stardIndex);
 
 
         return value;

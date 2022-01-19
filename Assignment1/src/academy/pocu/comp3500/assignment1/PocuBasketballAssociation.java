@@ -18,7 +18,13 @@ public final class PocuBasketballAssociation {
         int playerIndex = 0;
         int priorPlayer = gameStats[0].getPlayerName().hashCode();
         int currPlayer;
-        int sumOfPoints = 0, sumOfAssists = 0, sumOfPasses = 0, sumOfGoals = 0, sumOfGoalAttempts = 0, numOfPlayerGame = 0;
+        int sumOfPoints = 0;
+        int sumOfAssists = 0;
+        int sumOfPasses = 0;
+        int sumOfGoals = 0;
+        int sumOfGoalAttempts = 0;
+        int numOfPlayerGame = 0;
+
         for (int i = 0; i < gameStats.length; i++) {
             currPlayer = gameStats[i].getPlayerName().hashCode();
             if (currPlayer != priorPlayer) {
