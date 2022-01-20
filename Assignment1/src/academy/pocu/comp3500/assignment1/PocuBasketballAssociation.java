@@ -10,7 +10,7 @@ public final class PocuBasketballAssociation {
     }
 
     public static void processGameStats(final GameStat[] gameStats, final Player[] outPlayers) {
-        QuickSort.quicksort(gameStats);
+        QuickSortGameStat.quicksort(gameStats);
         for (int i = 0; i < gameStats.length; i++) {
             System.out.println(gameStats[i].getPlayerName());
         }
@@ -70,14 +70,62 @@ public final class PocuBasketballAssociation {
     }
 
     public static long find3ManDreamTeam(final Player[] players, final Player[] outPlayers, final Player[] scratch) {
-        return -1;
+        return findDreamTeam(players, 3, outPlayers, scratch);
     }
 
     public static long findDreamTeam(final Player[] players, int k, final Player[] outPlayers, final Player[] scratch) {
-        return -1;
+        if (k == 0)
+            return -1;
+        QuickSortPlayer.quicksortAssists(players);
+
+        long maxTeamwork;
+        long tmp;
+        int currPassesSum = 0;
+        int currMinAssist = players[k - 1].getAssistsPerGame();
+
+        for (int i = 0; i < k; i++) {
+            scratch[i] = players[i];
+            currPassesSum += players[i].getPassesPerGame();
+        }
+        maxTeamwork = (long) currPassesSum * currMinAssist;
+        for (int j = 0; j < k; j++) {
+            outPlayers[j] = scratch[j];
+        }
+
+        for (int i = k; i < players.length; i++) {
+            QuickSortPlayer.quicksortPasses(scratch, k);
+
+            currPassesSum -= scratch[k - 1].getPassesPerGame();
+            scratch[k - 1] = players[i];
+            currPassesSum += players[i].getPassesPerGame();
+            currMinAssist = players[i].getAssistsPerGame();
+            tmp = (long) currPassesSum * currMinAssist;
+
+            if (tmp > maxTeamwork) {
+                maxTeamwork = tmp;
+                for (int j = 0; j < k; j++) {
+                    outPlayers[j] = scratch[j];
+                }
+            }
+        }
+
+        return maxTeamwork;
     }
 
     public static int findDreamTeamSize(final Player[] players, final Player[] scratch) {
-        return -1;
+        int bestTeamSize = 1;
+        long bestTeamworkScore = Integer.MIN_VALUE;
+        long currTeamworkScore;
+
+        for (int i = 1; i <= players.length; i++) {
+            currTeamworkScore = findDreamTeam(players, i, scratch, scratch);
+
+            if (bestTeamworkScore < currTeamworkScore) {
+                bestTeamSize = i;
+                bestTeamworkScore = currTeamworkScore;
+            }
+        }
+
+        return bestTeamSize;
     }
 }

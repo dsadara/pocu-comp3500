@@ -2,7 +2,7 @@ package academy.pocu.comp3500.assignment1;
 
 import academy.pocu.comp3500.assignment1.pba.GameStat;
 
-public class QuickSort {
+public class QuickSortGameStat {
     public static void swap(GameStat[] arr, int a, int b) {
         GameStat tmp = arr[a];
         arr[a] = arr[b];
