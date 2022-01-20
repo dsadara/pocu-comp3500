@@ -113,19 +113,20 @@ public final class PocuBasketballAssociation {
     }
 
     public static int findDreamTeamSize(final Player[] players, final Player[] scratch) {
-        int bestTeamSize = 1;
-        long bestTeamworkScore = Integer.MIN_VALUE;
-        long currTeamworkScore;
-
-        for (int i = 1; i <= players.length; i++) {
-            currTeamworkScore = findDreamTeam(players, i, scratch, scratch);
-
-            if (bestTeamworkScore < currTeamworkScore) {
-                bestTeamSize = i;
-                bestTeamworkScore = currTeamworkScore;
-            }
-        }
-
-        return bestTeamSize;
+//        int bestTeamSize = 1;
+//        long bestTeamworkScore = Integer.MIN_VALUE;
+//        long currTeamworkScore;
+//
+//        for (int i = 1; i <= players.length; i++) {
+//            currTeamworkScore = findDreamTeam(players, i, scratch, scratch);
+//
+//            if (bestTeamworkScore < currTeamworkScore) {
+//                bestTeamSize = i;
+//                bestTeamworkScore = currTeamworkScore;
+//            }
+//        }
+//
+//        return bestTeamSize;
+        return -1;
     }
 }
