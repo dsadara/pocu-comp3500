@@ -28,8 +28,7 @@ public class QuickSortPlayer {
 
     public static void quicksortRecursiveAssists(Player[] arr, int left, int right) {
         // 종료조건 left와 right가 같거나 left가 right를 넘어가면 종료
-        if (left >= right)
-            return;
+        if (left >= right) return;
 
         int pivot = partitionAssists(arr, left, right);
 
@@ -59,8 +58,7 @@ public class QuickSortPlayer {
 
     public static void quicksortRecursivePasses(Player[] arr, int left, int right) {
         // 종료조건 left와 right가 같거나 left가 right를 넘어가면 종료
-        if (left >= right)
-            return;
+        if (left >= right) return;
 
         int pivot = partitionPasses(arr, left, right);
 
@@ -69,6 +67,6 @@ public class QuickSortPlayer {
     }
 
     public static void quicksortPasses(Player[] arr, int k) {
-            quicksortRecursivePasses(arr, 0, k - 1);
+        quicksortRecursivePasses(arr, 0, k - 1);
     }
 }
