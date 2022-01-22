@@ -162,74 +162,46 @@ public final class PocuBasketballAssociation {
 //
 //        return bestTeamSize;
 
+        for (int i = 0; i < players.length; i++) {
+            scratch[i] = players[i];
+        }
+
         int bestTeamSize = 1;
         long bestTeamworkScore = Integer.MIN_VALUE;
         long currTeamworkScore;
-
-        QuickSortPlayer.quicksortAssists(players);  // players배열은 안건드리므로 quicksort 한번만 해놓으면 됨
-        for (int k = 1; k <= players.length; k++) {
-            //findDreamTeam
-
-            long maxTeamwork;
-            long currTeamWork;
-            int currPassesSum = 0;
-            int currMinAssist = players[k - 1].getAssistsPerGame();
-
-            for (int i = 0; i < k; i++) {
-                scratch[i] = players[i];
-                currPassesSum += players[i].getPassesPerGame();
-            }
-            maxTeamwork = (long) currPassesSum * currMinAssist;
-
-            int maxTeamworkIndex = -1;
-            for (int i = k; i < players.length; i++) {
-//            QuickSortPlayer.quicksortPasses(scratch, k);
-                // find min at scratch array
-                int indexOfminPassesInScratch = 0;
-                int minPassesInScratch = Integer.MAX_VALUE;
-                for (int j = 0; j < k; j++) {
-                    if (scratch[j].getPassesPerGame() < minPassesInScratch) {
-                        indexOfminPassesInScratch = j;
-                        minPassesInScratch = scratch[j].getPassesPerGame();
-                    }
-                }
-
-
-                currPassesSum -= scratch[indexOfminPassesInScratch].getPassesPerGame();
-                scratch[indexOfminPassesInScratch] = players[i];
-                currPassesSum += players[i].getPassesPerGame();
-                currMinAssist = players[i].getAssistsPerGame();
+        long maxTeamwork = Integer.MIN_VALUE;
+        long currTeamWork;
+        int currPassesSum;
+        int currMinAssist;
+        int priorPassesSum = 0;
+        int priorMinAssist = Integer.MAX_VALUE;
+        int minAssistTmp;
+        int maxTeamworkIndex = 0;
+        int scratchLength = scratch.length;
+        for (int k = 1; k <= scratchLength; k++) {
+            currPassesSum = priorPassesSum;
+            currMinAssist = priorMinAssist;
+            minAssistTmp = priorMinAssist;
+            // maxScore만드는 원소 1개 찾아내기
+            for (int i = 0; i < scratch.length; i++) {
+                currPassesSum += scratch[i].getPassesPerGame();
+                if (currMinAssist > scratch[i].getAssistsPerGame())
+                    currMinAssist = scratch[i].getAssistsPerGame();
                 currTeamWork = (long) currPassesSum * currMinAssist;
-
                 if (currTeamWork > maxTeamwork) {
                     maxTeamworkIndex = i;
                     maxTeamwork = currTeamWork;
-//                for (int j = 0; j < k; j++) {
-//                    outPlayers[j] = scratch[j];
-//                }
+                    priorMinAssist = currMinAssist;
+                    priorPassesSum = currPassesSum;
                 }
+                currPassesSum -= scratch[i].getPassesPerGame();
+                currMinAssist = minAssistTmp;
             }
-            // 스크래치 초기화
-            for (int i = 0; i < k; i++) {
-                scratch[i] = players[i];
-            }
-            // outPlayer에 선수들을 담기위해 반복문을 다시 돌리기
-            for (int i = k; i <= maxTeamworkIndex; i++) {
-//            QuickSortPlayer.quicksortPasses(scratch, k);
-                // find min at scratch array
-                int indexOfminPassesInScratch = 0;
-                int minPassesInScratch = Integer.MAX_VALUE;
-                for (int j = 0; j < k; j++) {
-                    if (scratch[j].getPassesPerGame() < minPassesInScratch) {
-                        indexOfminPassesInScratch = j;
-                        minPassesInScratch = scratch[j].getPassesPerGame();
-                    }
-                }
-                scratch[indexOfminPassesInScratch] = players[i];
-            }
-            currTeamworkScore = maxTeamwork;
+            // 그 원소 scratch에서 삭제
+            scratch[maxTeamworkIndex] = scratch[scratchLength - 1]; // O(1) 배열삭제 -> 마지막 원소를 삭제한위치에 대입
+            scratchLength--;
 
-            //findDreamTeam
+            currTeamworkScore = maxTeamwork;
 
             if (bestTeamworkScore < currTeamworkScore) {
                 bestTeamSize = k;
