@@ -79,7 +79,7 @@ public final class PocuBasketballAssociation {
         QuickSortPlayer.quicksortAssists(players);
 
         long maxTeamwork;
-        long tmp;
+        long currTeamWork;
         int currPassesSum = 0;
         int currMinAssist = players[k - 1].getAssistsPerGame();
 
@@ -92,6 +92,7 @@ public final class PocuBasketballAssociation {
             outPlayers[j] = scratch[j];
         }
 
+        int maxTeamworkIndex = -1;
         for (int i = k; i < players.length; i++) {
             QuickSortPlayer.quicksortPasses(scratch, k);
 
@@ -99,14 +100,28 @@ public final class PocuBasketballAssociation {
             scratch[k - 1] = players[i];
             currPassesSum += players[i].getPassesPerGame();
             currMinAssist = players[i].getAssistsPerGame();
-            tmp = (long) currPassesSum * currMinAssist;
+            currTeamWork = (long) currPassesSum * currMinAssist;
 
-            if (tmp > maxTeamwork) {
-                maxTeamwork = tmp;
-                for (int j = 0; j < k; j++) {
-                    outPlayers[j] = scratch[j];
-                }
+            if (currTeamWork > maxTeamwork) {
+                maxTeamworkIndex = i;
+                maxTeamwork = currTeamWork;
+//                for (int j = 0; j < k; j++) {
+//                    outPlayers[j] = scratch[j];
+//                }
             }
+        }
+        // 스크래치 초기화
+        for (int i = 0; i < k; i++) {
+            scratch[i] = players[i];
+        }
+        // outPlayer에 선수들을 담기위해 반복문을 다시 돌리기
+        for (int i = k; i <= maxTeamworkIndex; i++) {
+            QuickSortPlayer.quicksortPasses(scratch, k);
+            scratch[k - 1] = players[i];
+        }
+        // outPlayer에 scratch 값 대입
+        for (int j = 0; j < k; j++) {
+            outPlayers[j] = scratch[j];
         }
 
         return maxTeamwork;
