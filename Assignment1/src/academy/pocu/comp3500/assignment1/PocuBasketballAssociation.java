@@ -96,18 +96,18 @@ public final class PocuBasketballAssociation {
         for (int i = k; i < players.length; i++) {
 //            QuickSortPlayer.quicksortPasses(scratch, k);
             // find min at scratch array
-            int IndexOfMinPassesInScratch = 0;
-            int MinPassesInScratch = Integer.MAX_VALUE;
+            int indexOfminPassesInScratch = 0;
+            int minPassesInScratch = Integer.MAX_VALUE;
             for (int j = 0; j < k; j++) {
-                if (scratch[j].getPassesPerGame() < MinPassesInScratch) {
-                    IndexOfMinPassesInScratch = j;
-                    MinPassesInScratch = scratch[j].getPassesPerGame();
+                if (scratch[j].getPassesPerGame() < minPassesInScratch) {
+                    indexOfminPassesInScratch = j;
+                    minPassesInScratch = scratch[j].getPassesPerGame();
                 }
             }
 
 
-            currPassesSum -= scratch[IndexOfMinPassesInScratch].getPassesPerGame();
-            scratch[IndexOfMinPassesInScratch] = players[i];
+            currPassesSum -= scratch[indexOfminPassesInScratch].getPassesPerGame();
+            scratch[indexOfminPassesInScratch] = players[i];
             currPassesSum += players[i].getPassesPerGame();
             currMinAssist = players[i].getAssistsPerGame();
             currTeamWork = (long) currPassesSum * currMinAssist;
@@ -128,15 +128,15 @@ public final class PocuBasketballAssociation {
         for (int i = k; i <= maxTeamworkIndex; i++) {
 //            QuickSortPlayer.quicksortPasses(scratch, k);
             // find min at scratch array
-            int IndexOfMinPassesInScratch = 0;
-            int MinPassesInScratch = Integer.MAX_VALUE;
+            int indexOfminPassesInScratch = 0;
+            int minPassesInScratch = Integer.MAX_VALUE;
             for (int j = 0; j < k; j++) {
-                if (scratch[j].getPassesPerGame() < MinPassesInScratch) {
-                    IndexOfMinPassesInScratch = j;
-                    MinPassesInScratch = scratch[j].getPassesPerGame();
+                if (scratch[j].getPassesPerGame() < minPassesInScratch) {
+                    indexOfminPassesInScratch = j;
+                    minPassesInScratch = scratch[j].getPassesPerGame();
                 }
             }
-            scratch[IndexOfMinPassesInScratch] = players[i];
+            scratch[indexOfminPassesInScratch] = players[i];
         }
         // outPlayer에 scratch 값 대입
         for (int j = 0; j < k; j++) {
