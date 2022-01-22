@@ -94,10 +94,20 @@ public final class PocuBasketballAssociation {
 
         int maxTeamworkIndex = -1;
         for (int i = k; i < players.length; i++) {
-            QuickSortPlayer.quicksortPasses(scratch, k);
+//            QuickSortPlayer.quicksortPasses(scratch, k);
+            // find min at scratch array
+            int IndexOfMinPassesInScratch = 0;
+            int MinPassesInScratch = Integer.MAX_VALUE;
+            for (int j = 0; j < k; j++) {
+                if (scratch[j].getPassesPerGame() < MinPassesInScratch) {
+                    IndexOfMinPassesInScratch = j;
+                    MinPassesInScratch = scratch[j].getPassesPerGame();
+                }
+            }
 
-            currPassesSum -= scratch[k - 1].getPassesPerGame();
-            scratch[k - 1] = players[i];
+
+            currPassesSum -= scratch[IndexOfMinPassesInScratch].getPassesPerGame();
+            scratch[IndexOfMinPassesInScratch] = players[i];
             currPassesSum += players[i].getPassesPerGame();
             currMinAssist = players[i].getAssistsPerGame();
             currTeamWork = (long) currPassesSum * currMinAssist;
@@ -116,8 +126,17 @@ public final class PocuBasketballAssociation {
         }
         // outPlayer에 선수들을 담기위해 반복문을 다시 돌리기
         for (int i = k; i <= maxTeamworkIndex; i++) {
-            QuickSortPlayer.quicksortPasses(scratch, k);
-            scratch[k - 1] = players[i];
+//            QuickSortPlayer.quicksortPasses(scratch, k);
+            // find min at scratch array
+            int IndexOfMinPassesInScratch = 0;
+            int MinPassesInScratch = Integer.MAX_VALUE;
+            for (int j = 0; j < k; j++) {
+                if (scratch[j].getPassesPerGame() < MinPassesInScratch) {
+                    IndexOfMinPassesInScratch = j;
+                    MinPassesInScratch = scratch[j].getPassesPerGame();
+                }
+            }
+            scratch[IndexOfMinPassesInScratch] = players[i];
         }
         // outPlayer에 scratch 값 대입
         for (int j = 0; j < k; j++) {
