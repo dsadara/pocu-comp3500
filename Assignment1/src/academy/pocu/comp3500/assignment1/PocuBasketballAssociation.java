@@ -141,21 +141,77 @@ public final class PocuBasketballAssociation {
         // outPlayer에 scratch 값 대입
         for (int j = 0; j < k; j++) {
             outPlayers[j] = scratch[j];
+//            System.out.print(outPlayers[j].getName() + ", ");
         }
-
+//        System.out.println();
+//        System.out.println("maxScore" + maxTeamwork);
         return maxTeamwork;
     }
 
     public static int findDreamTeamSize(final Player[] players, final Player[] scratch) {
+//        int bestTeamSize = 1;
+//        long bestTeamworkScore = Integer.MIN_VALUE;
+//        long currTeamworkScore;
+//
+//        for (int i = 1; i <= players.length; i++) {
+//            currTeamworkScore = findDreamTeam(players, i, scratch, scratch);
+//
+//            if (bestTeamworkScore < currTeamworkScore) {
+//                bestTeamSize = i;
+//                bestTeamworkScore = currTeamworkScore;
+//            }
+//        }
+//
+//        return bestTeamSize;
+
         int bestTeamSize = 1;
         long bestTeamworkScore = Integer.MIN_VALUE;
         long currTeamworkScore;
 
-        for (int i = 1; i <= players.length; i++) {
-            currTeamworkScore = findDreamTeam(players, i, scratch, scratch);
+        QuickSortPlayer.quicksortAssists(players);
+        for (int k = 1; k <= players.length; k++) {
+            // =============================
+
+            long maxTeamwork;
+            long currTeamWork;
+            int currPassesSum = 0;
+            int currMinAssist = players[k - 1].getAssistsPerGame();
+
+            for (int i = 0; i < k; i++) {
+                scratch[i] = players[i];
+                currPassesSum += players[i].getPassesPerGame();
+            }
+            maxTeamwork = (long) currPassesSum * currMinAssist;
+
+            for (int i = k; i < players.length; i++) {
+//            QuickSortPlayer.quicksortPasses(scratch, k);
+                // find min at scratch array
+                int indexOfminPassesInScratch = 0;
+                int minPassesInScratch = Integer.MAX_VALUE;
+                for (int j = 0; j < k; j++) {
+                    if (scratch[j].getPassesPerGame() < minPassesInScratch) {
+                        indexOfminPassesInScratch = j;
+                        minPassesInScratch = scratch[j].getPassesPerGame();
+                    }
+                }
+
+
+                currPassesSum -= scratch[indexOfminPassesInScratch].getPassesPerGame();
+                scratch[indexOfminPassesInScratch] = players[i];
+                currPassesSum += players[i].getPassesPerGame();
+                currMinAssist = players[i].getAssistsPerGame();
+                currTeamWork = (long) currPassesSum * currMinAssist;
+
+                if (currTeamWork > maxTeamwork) {
+                    maxTeamwork = currTeamWork;
+                }
+            }
+
+            // ============================
+            currTeamworkScore = maxTeamwork;
 
             if (bestTeamworkScore < currTeamworkScore) {
-                bestTeamSize = i;
+                bestTeamSize = k;
                 bestTeamworkScore = currTeamworkScore;
             }
         }
