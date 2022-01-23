@@ -27,7 +27,10 @@ public final class MissionControl {
 
     public static ArrayList<Integer> findAltitudeTimes(final int[] altitudes, final int targetAltitude) {
         ArrayList<Integer> altitudeTimes = new ArrayList<Integer>();
-        int searchResult = BinarySearch.binarySearchMaxAlt(altitudes);
+        int searchResult = -1;
+        if (altitudes.length != 2) {    // altitudes 원소의 개수가 2개일때는 최댓값 search 하지않음
+            searchResult = BinarySearch.binarySearchMaxAlt(altitudes);    // 올라갔다 내려가는경우 최대고도 찾기
+        }
         if (searchResult == -1) {   // 오르거나 내려가기만 하는 경우
             int targetAltitudeTime;
             if (altitudes[0] - (altitudes.length - 1) >= altitudes[altitudes.length - 1]) {    // 고도가 내려가기만 하는 경우
