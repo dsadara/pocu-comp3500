@@ -14,7 +14,7 @@ public class BinarySearch {
         int m;
 
         if (l < alts.length / 2 && r < alts.length / 2)     // {4, 5, 4, 3, 2 } 와 같은 케이스 -> l = 0, r = 1인 경우 nullIndexError
-            m = (int) Math.ceil((double)(l + r) / 2);
+            m = (int) Math.ceil((double) (l + r) / 2);
         else
             m = (l + r) / 2;    // 평균구한 후 내림
 
@@ -31,7 +31,7 @@ public class BinarySearch {
         return binarysearchRecursiveMaxAlt(alts, 0, alts.length - 1);
     }
 
-    public static int binarysearchRecursive(int [] alts, int l, int r, int value) {
+    public static int binarysearchRecursive(int[] alts, int l, int r, int value) {
 //        if (alts.length == 1) { // 원소가 1인경우
 //            if (alts[0] == value)
 //                return 0;
@@ -53,7 +53,7 @@ public class BinarySearch {
         }
     }
 
-    public static int binarysearchRecursiveDescend(int [] alts, int l, int r, int value) {
+    public static int binarysearchRecursiveDescend(int[] alts, int l, int r, int value) {
 //        if (alts.length == 1) { // 원소가 1인경우
 //            if (alts[0] == value)
 //                return 0;
