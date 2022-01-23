@@ -18,7 +18,10 @@ public final class MissionControl {
 //
 //        }
 //        return maxAltitudeIndex;
-
+        int searchResult = BinarySearch.binarySearch(altitudes);
+        if (searchResult != -1) {
+            return searchResult;
+        }
         int flightTime = altitudes.length;
         if (altitudes[0] + (flightTime - 1) <= altitudes[flightTime - 1] ) {   // 고도가 올라가기만 하는 경우
             return flightTime - 1;
