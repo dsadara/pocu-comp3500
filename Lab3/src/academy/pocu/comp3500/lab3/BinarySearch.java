@@ -16,8 +16,7 @@ public class BinarySearch {
 
         if (alts[m - 1] < alts[m] && alts[m] > alts[m + 1]) { // 최고 고도면 m 반환!
             return m;
-        }
-        else if (alts[m - 1] > alts[m]) {  // alts[m - 1]이 alts[m]보다 크면 왼쪽으로 고고
+        } else if (alts[m - 1] > alts[m]) {  // alts[m - 1]이 alts[m]보다 크면 왼쪽으로 고고
             return binarysearchRecursive(alts, l, m - 1);
         } else {    // 작으면 오른쪽으로 고고
             return binarysearchRecursive(alts, m + 1, r);
