@@ -11,8 +11,12 @@ public class BinarySearch {
             if (l == alts.length - 1)
                 return -1;
         }
+        int m;
 
-        int m = (l + r) / 2;    // 평균구한 후 내림
+        if (l < alts.length / 2 && r < alts.length / 2)     // {4, 5, 4, 3, 2 } 와 같은 케이스 -> l = 0, r = 1인 경우 nullIndexError
+            m = (int) Math.ceil((double)(l + r) / 2);
+        else
+            m = (l + r) / 2;    // 평균구한 후 내림
 
         if (alts[m - 1] < alts[m] && alts[m] > alts[m + 1]) { // 최고 고도면 m 반환!
             return m;
