@@ -3,7 +3,6 @@ package academy.pocu.comp3500.lab4;
 import academy.pocu.comp3500.lab4.pocuhacker.RainbowTable;
 import academy.pocu.comp3500.lab4.pocuhacker.User;
 
-import java.util.Arrays;
 
 public final class Cracker {
     final User[] userTable;
@@ -22,11 +21,10 @@ public final class Cracker {
 
         String[] plaintextPWs = new String[userTable.length];
         for (int i = 0; i < userTable.length; i++) {
-            for (RainbowTable table : rainbowTables) {
                 String userPassWordHash = userTable[i].getPasswordHash();
-                if (table.contains(userPassWordHash)) {
-                    plaintextPWs[i] = table.get(userPassWordHash);
-                    break;
+            for (int j = 0; j < 5; j++) {
+                if (rainbowTables[j].contains(userPassWordHash)) {
+                    plaintextPWs[i] = rainbowTables[j].get(userPassWordHash);
                 }
             }
         }
