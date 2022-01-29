@@ -33,7 +33,7 @@ public final class Cracker {
         CRC32 crc32 = new CRC32();
         crc32.update(inputBytes);
         myPWHash = String.valueOf(crc32.getValue());
-        for (User user: userTable) {
+        for (User user : userTable) {
             if (user.getPasswordHash().equals(myPWHash))
                 hashAlgo = 0;
         }
@@ -44,7 +44,7 @@ public final class Cracker {
             md.update(inputBytes);
             byte[] digest = md.digest();
             myPWHash = Base64.getEncoder().encodeToString(digest);
-            for (User user: userTable) {
+            for (User user : userTable) {
                 if (user.getPasswordHash().equals(myPWHash))
                     hashAlgo = 1;
             }
@@ -59,7 +59,7 @@ public final class Cracker {
             md.update(inputBytes);
             byte[] digest = md.digest();
             myPWHash = Base64.getEncoder().encodeToString(digest);
-            for (User user: userTable) {
+            for (User user : userTable) {
                 if (user.getPasswordHash().equals(myPWHash))
                     hashAlgo = 2;
             }
@@ -73,7 +73,7 @@ public final class Cracker {
             md.update(inputBytes);
             byte[] digest = md.digest();
             myPWHash = Base64.getEncoder().encodeToString(digest);
-            for (User user: userTable) {
+            for (User user : userTable) {
                 if (user.getPasswordHash().equals(myPWHash))
                     hashAlgo = 3;
             }
@@ -87,7 +87,7 @@ public final class Cracker {
             md.update(inputBytes);
             byte[] digest = md.digest();
             myPWHash = Base64.getEncoder().encodeToString(digest);
-            for (User user: userTable) {
+            for (User user : userTable) {
                 if (user.getPasswordHash().equals(myPWHash))
                     hashAlgo = 4;
             }
@@ -97,9 +97,9 @@ public final class Cracker {
 
         String[] plaintextPWs = new String[userTable.length];
         for (int i = 0; i < userTable.length; i++) {
-                String userPassWordHash = userTable[i].getPasswordHash();
-                if (rainbowTables[hashAlgo].contains(userPassWordHash))
-                    plaintextPWs[i] = rainbowTables[hashAlgo].get(userPassWordHash);
+            String userPassWordHash = userTable[i].getPasswordHash();
+            if (rainbowTables[hashAlgo].contains(userPassWordHash))
+                plaintextPWs[i] = rainbowTables[hashAlgo].get(userPassWordHash);
         }
         return plaintextPWs;
     }
