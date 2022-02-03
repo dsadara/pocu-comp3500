@@ -2,10 +2,7 @@ package academy.pocu.comp3500.lab5;
 
 import javax.crypto.Cipher;
 import java.nio.ByteBuffer;
-import java.security.KeyFactory;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
@@ -26,8 +23,10 @@ public class Bank {
     }
 
     public long getBalance(final byte[] pubKey) {
-        int index = pubKeysHashMap.get(pubKey.hashCode());
-        return amounts[index];
+        Integer index = pubKeysHashMap.get(pubKey.hashCode());
+        if (index == null)
+            return 0;
+        return amounts[index.intValue()];
     }
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
