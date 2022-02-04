@@ -13,9 +13,7 @@ import java.util.Base64;
 import java.util.HashMap;
 
 public class Bank {
-//    private byte[][] pubKeys;
     private ArrayList<byte[]> pubKeys = new ArrayList<>();
-//    private long[] amounts;
     private ArrayList<Long> amounts = new ArrayList<>();
     HashMap<byte[], Integer> pubKeysHashMap = new HashMap<>();
 
@@ -45,7 +43,7 @@ public class Bank {
             return false;
         if (pubKeysHashMap.get(to) == null) {    // to의 지갑이 유효하지 않으면 새 지갑을 만들어 넣기?
             pubKeys.add(to);
-            amounts.add((long)0);
+            amounts.add((long) 0);
             pubKeysHashMap.put(to, pubKeys.size() - 1);
         }
 
