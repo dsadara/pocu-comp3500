@@ -14,20 +14,20 @@ import java.util.HashMap;
 public class Bank {
     private byte[][] pubKeys;
     private long[] amounts;
-    HashMap<Integer, Integer> pubKeysHashMap = new HashMap<>();
+    HashMap<byte[], Integer> pubKeysHashMap = new HashMap<>();
 
     public Bank(byte[][] pubKeys, final long[] amounts) {
         this.pubKeys = pubKeys;
         this.amounts = amounts;
         // public key의 해시코드를 순서대로 배열에 저장
         for (int i = 0; i < pubKeys.length; i++) {
-            int hashCode = pubKeys[i].hashCode();
-            pubKeysHashMap.put(hashCode, i);
+//            int hashCode = pubKeys[i].hashCode();
+            pubKeysHashMap.put(pubKeys[i], i);
         }
     }
 
     public long getBalance(final byte[] pubKey) {
-        Integer index = pubKeysHashMap.get(pubKey.hashCode());
+        Integer index = pubKeysHashMap.get(pubKey);
         if (index == null)
             return 0;
         return amounts[index.intValue()];
@@ -35,9 +35,9 @@ public class Bank {
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
         // check if wallets are valid
-        if (pubKeysHashMap.get(to.hashCode()) == null)      // to의 지갑이 유효하지 않으면 false
+        if (pubKeysHashMap.get(to) == null)      // to의 지갑이 유효하지 않으면 false
             return false;
-        if (pubKeysHashMap.get(from.hashCode()) == null)    // from의 지갑이 유효하지 않으면 false
+        if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
             return false;
 
         // check if amount are valid
@@ -76,8 +76,8 @@ public class Bank {
             return false;
 
         // transfer
-        int fromIndex = pubKeysHashMap.get(from.hashCode());
-        int toIndex = pubKeysHashMap.get(to.hashCode());
+        int fromIndex = pubKeysHashMap.get(from);
+        int toIndex = pubKeysHashMap.get(to);
         amounts[fromIndex] -= amount;
         amounts[toIndex] += amount;
 
