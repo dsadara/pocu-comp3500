@@ -42,7 +42,7 @@ public class Bank {
         // check if amount are valid
         long fromBalance = getBalance(from);
         long toBalance = getBalance(to);
-        if (amount < 0)                 // if amount is not valid
+        if (amount <= 0)                 // if amount is not valid
             return false;
         if (fromBalance - amount < 0)   // if amount exceed balance
             return false;
