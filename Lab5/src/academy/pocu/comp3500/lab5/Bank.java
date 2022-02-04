@@ -2,7 +2,10 @@ package academy.pocu.comp3500.lab5;
 
 import javax.crypto.Cipher;
 import java.nio.ByteBuffer;
-import java.security.*;
+import java.security.KeyFactory;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
@@ -31,9 +34,9 @@ public class Bank {
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
         // check if wallets are valid
-        if (pubKeysHashMap.get(from.hashCode()) == null)    // from의 지갑이 유효하지 않으면 false
-            return false;
         if (pubKeysHashMap.get(to.hashCode()) == null)      // to의 지갑이 유효하지 않으면 false
+            return false;
+        if (pubKeysHashMap.get(from.hashCode()) == null)    // from의 지갑이 유효하지 않으면 false
             return false;
 
         // check if amount are valid
