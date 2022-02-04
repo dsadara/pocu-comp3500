@@ -8,17 +8,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 
 public class Bank {
-    private byte[][] pubKeys;
-    private long[] amounts;
+//    private byte[][] pubKeys;
+    private ArrayList<byte[]> pubKeys = new ArrayList<>();
+//    private long[] amounts;
+    private ArrayList<Long> amounts = new ArrayList<>();
     HashMap<byte[], Integer> pubKeysHashMap = new HashMap<>();
 
     public Bank(byte[][] pubKeys, final long[] amounts) {
-        this.pubKeys = pubKeys;
-        this.amounts = amounts;
+        for (int i = 0; i < pubKeys.length; i++) {
+            this.pubKeys.add(pubKeys[i]);
+        }
+        for (int i = 0; i < amounts.length; i++) {
+            this.amounts.add(amounts[i]);
+        }
         // public key의 해시코드를 순서대로 배열에 저장
         for (int i = 0; i < pubKeys.length; i++) {
             pubKeysHashMap.put(pubKeys[i], i);
@@ -29,15 +36,18 @@ public class Bank {
         Integer index = pubKeysHashMap.get(pubKey);
         if (index == null)
             return 0;
-        return amounts[index.intValue()];
+        return amounts.get(index.intValue());
     }
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
         // check if wallets are valid
-        if (pubKeysHashMap.get(to) == null)      // to의 지갑이 유효하지 않으면 false
-            return false;
         if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
             return false;
+        if (pubKeysHashMap.get(to) == null) {    // to의 지갑이 유효하지 않으면 새 지갑을 만들어 넣기?
+            pubKeys.add(to);
+            amounts.add((long)0);
+            pubKeysHashMap.put(to, pubKeys.size() - 1);
+        }
 
         // check if amount are valid
         long fromBalance = getBalance(from);
@@ -77,9 +87,8 @@ public class Bank {
         // transfer
         int fromIndex = pubKeysHashMap.get(from);
         int toIndex = pubKeysHashMap.get(to);
-        amounts[fromIndex] -= amount;
-        amounts[toIndex] += amount;
-
+        amounts.set(fromIndex, amounts.get(fromIndex) - amount);
+        amounts.set(toIndex, amounts.get(toIndex) + amount);
 
         return true;
     }
