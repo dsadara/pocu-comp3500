@@ -31,7 +31,7 @@ public class Bank {
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
         // check if wallets are valid
-        if (pubKeysHashMap.get(from.hashCode()) == null)   // from의 지갑이 유효하지 않으면 false
+        if (pubKeysHashMap.get(from.hashCode()) == null)    // from의 지갑이 유효하지 않으면 false
             return false;
         if (pubKeysHashMap.get(to.hashCode()) == null)      // to의 지갑이 유효하지 않으면 false
             return false;
@@ -39,9 +39,11 @@ public class Bank {
         // check if amount are valid
         long fromBalance = getBalance(from);
         long toBalance = getBalance(to);
-        if (amount < 0)                 // if amount is not valid return false
+        if (amount < 0)                 // if amount is not valid
             return false;
-        if (fromBalance - amount < 0)   // if amount exceed balance return false
+        if (fromBalance - amount < 0)   // if amount exceed balance
+            return false;
+        if (toBalance + amount < 0)     // check if receiver too rich so overflow
             return false;
 
 
