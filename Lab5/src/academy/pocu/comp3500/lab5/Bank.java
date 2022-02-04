@@ -20,11 +20,7 @@ public class Bank {
         this.pubKeys = pubKeys;
         this.amounts = amounts;
         // public key의 해시코드를 순서대로 배열에 저장
-//        for (int i = 0; i < pubKeys.length; i++) {
-////            int hashCode = pubKeys[i].hashCode();
-//            pubKeysHashMap.put(pubKeys[i], i);
-//        }
-        for (int i = pubKeys.length - 1; i >= 0 ; i--) {
+        for (int i = 0; i < pubKeys.length; i++) {
             pubKeysHashMap.put(pubKeys[i], i);
         }
     }
