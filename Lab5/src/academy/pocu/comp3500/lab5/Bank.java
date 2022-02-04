@@ -30,6 +30,21 @@ public class Bank {
     }
 
     public boolean transfer(final byte[] from, final byte[] to, final long amount, final byte[] signature) {
+        // check if wallets are valid
+        if (pubKeysHashMap.get(from.hashCode()) == null)   // from의 지갑이 유효하지 않으면 false
+            return false;
+        if (pubKeysHashMap.get(to.hashCode()) == null)      // to의 지갑이 유효하지 않으면 false
+            return false;
+
+        // check if amount are valid
+        long fromBalance = getBalance(from);
+        long toBalance = getBalance(to);
+        if (amount < 0)                 // if amount is not valid return false
+            return false;
+        if (fromBalance - amount < 0)   // if amount exceed balance return false
+            return false;
+
+
         String receivedMessageSHA256 = decryptWithPublicKey(signature, from);
         if (receivedMessageSHA256 == null)
             return false;
@@ -75,24 +90,6 @@ public class Bank {
         } catch (Exception e) {
             return null;    // if sth wrong return null;
         }
-    }
-
-    private static byte[] decodeFromHexString(String hexString) {
-        byte[] bytes = new byte[hexString.length() / 2];
-        for (int i = 0; i < hexString.length(); i += 2) {
-            int firstDigit = Character.digit(hexString.charAt(i), 16);
-            int secondDigit = Character.digit(hexString.charAt(i + 1), 16);
-            bytes[i / 2] = (byte) ((firstDigit << 4) + secondDigit);
-        }
-        return bytes;
-    }
-
-    private static String encodeToHexString(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte oneByte : bytes) {
-            result.append(String.format("%02x", oneByte));
-        }
-        return result.toString();
     }
 
 }
