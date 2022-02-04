@@ -1,5 +1,6 @@
 package academy.pocu.comp3500.lab5;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import java.nio.ByteBuffer;
 import java.security.KeyFactory;
@@ -92,8 +93,12 @@ public class Bank {
             byte[] plaintext = cipher.doFinal(signature);
             return Base64.getEncoder().encodeToString(plaintext);
 //            return new String(plaintext, StandardCharsets.UTF_8);
+        } catch (BadPaddingException e) {
+            e.printStackTrace();    // if wrong publickey is wrong
+            return null;
         } catch (Exception e) {
-            return null;    // if sth wrong return null;
+            e.printStackTrace();
+            throw new RuntimeException("에러!!");
         }
     }
 
