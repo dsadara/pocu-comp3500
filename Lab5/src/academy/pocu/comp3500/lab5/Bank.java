@@ -37,8 +37,8 @@ public class Bank {
         // check if wallets are valid
         if (pubKeysHashMap.get(to) == null)      // to의 지갑이 유효하지 않으면 false
             return false;
-        if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
-            return false;
+//        if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
+//            return false;
 
         // check if amount are valid
         long fromBalance = getBalance(from);
