@@ -20,8 +20,11 @@ public class Bank {
         this.pubKeys = pubKeys;
         this.amounts = amounts;
         // public key의 해시코드를 순서대로 배열에 저장
-        for (int i = 0; i < pubKeys.length; i++) {
-//            int hashCode = pubKeys[i].hashCode();
+//        for (int i = 0; i < pubKeys.length; i++) {
+////            int hashCode = pubKeys[i].hashCode();
+//            pubKeysHashMap.put(pubKeys[i], i);
+//        }
+        for (int i = pubKeys.length - 1; i >= 0 ; i--) {
             pubKeysHashMap.put(pubKeys[i], i);
         }
     }
@@ -37,8 +40,8 @@ public class Bank {
         // check if wallets are valid
         if (pubKeysHashMap.get(to) == null)      // to의 지갑이 유효하지 않으면 false
             return false;
-//        if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
-//            return false;
+        if (pubKeysHashMap.get(from) == null)    // from의 지갑이 유효하지 않으면 false
+            return false;
 
         // check if amount are valid
         long fromBalance = getBalance(from);
