@@ -10,7 +10,8 @@ public class Node2 {
     private Node2 left;
     private Node2 right;
 
-    public Node2() {}
+    public Node2() {
+    }
 
     public Node2(final Player player) {
         this.player = player;
@@ -74,9 +75,9 @@ public class Node2 {
         }
 
         if (player.getRating() < node.getRating()) {
-            node.left =  insertRecursive(node.left, player);
+            node.left = insertRecursive(node.left, player);
         } else {    // data >= node.data
-            node.right =  insertRecursive(node.right, player);
+            node.right = insertRecursive(node.right, player);
         }
 
         return node;
@@ -90,9 +91,9 @@ public class Node2 {
 
         if (player.getRating() < node.getRating()) {
             isNodeFinded = deleteRecursive(node.left, player, node);
-        } else if (player.getRating() == node.getRating()){
+        } else if (player.getRating() == node.getRating()) {
             //  삭제할 노드의 자식이 0인경우
-            if (node.left == null && node.right == null)  {
+            if (node.left == null && node.right == null) {
                 if (parent.left == node)
                     parent.left = null;
                 else
@@ -109,7 +110,7 @@ public class Node2 {
                     parent.right = node.left;
             } else {     // 삭제할 노드의 자식이 2인경우
                 Node2 priorNodeParent = findPriorParentRecursive(node.left, node);    // 왼쪽 하위 트리의 가장 오른쪽 리프 찾기
-                System.out.println("prior: " + priorNodeParent.getRight().getRating() + " node: " + node.getRating() );
+                System.out.println("prior: " + priorNodeParent.getRight().getRating() + " node: " + node.getRating());
 //                node.setData(priorNodeParent.getRight().getRating());   // 두 노드 교환 후 리프 노트 삭제
 //                priorNodeParent.right = null;
                 // 노드 교환

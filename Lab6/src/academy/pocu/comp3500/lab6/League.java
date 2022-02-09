@@ -12,7 +12,7 @@ public class League {
     }
 
     public League(Player[] players) {
-        for (Player player: players) {
+        for (Player player : players) {
             this.node = Node2.insertRecursive(this.node, player);
         }
     }
@@ -24,7 +24,7 @@ public class League {
         players.remove(player);
         int matchPlayerIndex = 0;
         for (int i = 0; i < players.size(); i++) {
-            if (Math.abs(players.get(i).getRating() - player.getRating()) <= Math.abs(players.get(matchPlayerIndex).getRating() - player.getRating()) ) {
+            if (Math.abs(players.get(i).getRating() - player.getRating()) <= Math.abs(players.get(matchPlayerIndex).getRating() - player.getRating())) {
                 matchPlayerIndex = i;
             }
         }
@@ -39,7 +39,7 @@ public class League {
         ArrayList<Player> topPlayers = new ArrayList<>();
         Node2.traverseInOrderRecursive(node, topPlayers);
 
-        return  topPlayers.subList(0, count).toArray(new Player[0]);
+        return topPlayers.subList(0, count).toArray(new Player[0]);
     }
 
     public Player[] getBottom(int count) {
@@ -49,7 +49,7 @@ public class League {
         ArrayList<Player> topPlayers = new ArrayList<>();
         Node2.traverseInOrderRecursive3(node, topPlayers);
 
-        return  topPlayers.subList(0, count).toArray(new Player[0]);
+        return topPlayers.subList(0, count).toArray(new Player[0]);
     }
 
     public Boolean join(Player player) {
@@ -72,7 +72,6 @@ public class League {
         node = sudoparent.getLeft();
         return true;
     }
-
 
 
 }
