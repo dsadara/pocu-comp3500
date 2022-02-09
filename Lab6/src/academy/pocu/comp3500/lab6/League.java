@@ -17,7 +17,7 @@ public class League {
         }
     }
 
-    public Player findMatchOrNull(Player player) {
+    public Player findMatchOrNull(final Player player) {
         ArrayList<Player> players = new ArrayList<>();
         Node2.traverseInOrderRecursive3(node, players);
 
@@ -32,7 +32,7 @@ public class League {
         return players.get(matchPlayerIndex);
     }
 
-    public Player[] getTop(int count) {
+    public Player[] getTop(final int count) {
         if (node == null) {
             return new Player[0];
         }
@@ -42,7 +42,7 @@ public class League {
         return topPlayers.subList(0, count).toArray(new Player[0]);
     }
 
-    public Player[] getBottom(int count) {
+    public Player[] getBottom(final int count) {
         if (node == null) {
             return new Player[0];
         }
@@ -52,7 +52,7 @@ public class League {
         return topPlayers.subList(0, count).toArray(new Player[0]);
     }
 
-    public Boolean join(Player player) {
+    public boolean join(final Player player) {
         if (Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수면 false 반환
             return false;
 
@@ -61,7 +61,7 @@ public class League {
         return true;
     }
 
-    public Boolean leave(Player player) {
+    public boolean leave(final Player player) {
         if (!Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수가 아니라면 false 반환
             return false;
 
