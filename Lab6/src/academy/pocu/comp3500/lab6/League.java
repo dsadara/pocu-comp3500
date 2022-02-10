@@ -118,7 +118,7 @@ public class League {
         if (Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수면 false 반환
             return false;
 
-        Node2.insertRecursive(node, player);
+        node = Node2.insertRecursive(node, player);
 
         return true;
     }
