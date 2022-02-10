@@ -52,9 +52,31 @@ public class League {
                     return playerNodeGrandParent.getPlayer();
             }
         } else if (priorNode == null) {
-            return nextNode.getPlayer();
+            int parentDist = player.getRating() - playerNodeParent.getRating();
+            int nextDist = Math.abs(player.getRating() - nextNode.getRating());
+            if (Math.abs(parentDist) < Math.abs(nextDist))
+                return playerNodeParent.getPlayer();
+            else if (Math.abs(parentDist) > Math.abs(nextDist))
+                return nextNode.getPlayer();
+            else {  // nextDist == grandParentDist
+                if (parentDist < 0)
+                    return playerNodeParent.getPlayer();
+                else
+                    return nextNode.getPlayer();
+            }
         } else if (nextNode == null) {
-            return priorNode.getPlayer();
+            int parentDist = player.getRating() - playerNodeParent.getRating();
+            int priorDist = Math.abs(player.getRating() - priorNode.getRating());
+            if (Math.abs(parentDist) < Math.abs(priorDist))
+                return playerNodeParent.getPlayer();
+            else if (Math.abs(parentDist) > Math.abs(priorDist))
+                return priorNode.getPlayer();
+            else {  // priorDist == grandParentDist
+                if (parentDist < 0)
+                    return playerNodeParent.getPlayer();
+                else
+                    return priorNode.getPlayer();
+            }
         } else {    // priorNode != null && nextNode != null
             int nextDist = Math.abs(player.getRating() - nextNode.getRating());
             int priorDist = Math.abs(player.getRating() - priorNode.getRating());
