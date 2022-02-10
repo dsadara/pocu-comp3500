@@ -13,7 +13,7 @@ public class League {
 
     public League(Player[] players) {
         for (Player player : players) {
-            this.node = Node2.insertRecursive(this.node, player);
+            this.node = Node2.insertRecursiveStatic(this.node, player, null);
         }
     }
 
@@ -28,7 +28,7 @@ public class League {
         Node2 sudoRoot = new Node2(new Player(Integer.MAX_VALUE, "???", Integer.MAX_VALUE));
         sudoRoot.setLeft(this.node);
 
-        Node2 playerNode = Node2.findRecursive2(this.node, player);
+        Node2 playerNode = Node2.findRecursiveReturnNode(this.node, player);
         Node2 playerNodeParent = Node2.findParentRecursive(sudoRoot, player, null);
         Node2 playerNodeGrandParent = Node2.findParentRecursive(sudoRoot, playerNodeParent.getPlayer(), null);
         Node2 priorNode = null;
@@ -93,7 +93,7 @@ public class League {
             return new Player[0];
         }
         ArrayList<Player> topPlayers = new ArrayList<>();
-        Node2.traverseInOrderRecursive(node, topPlayers);
+        Node2.traverseInOrderRecursiveDescending(node, topPlayers);
 
         if (topPlayers.size() < count)
             return topPlayers.toArray(new Player[0]);
@@ -106,7 +106,7 @@ public class League {
             return new Player[0];
         }
         ArrayList<Player> topPlayers = new ArrayList<>();
-        Node2.traverseInOrderRecursive3(node, topPlayers);
+        Node2.traverseInOrderRecursiveAscending(node, topPlayers);
 
         if (topPlayers.size() < count)
             return topPlayers.toArray(new Player[0]);
@@ -118,7 +118,7 @@ public class League {
         if (Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수면 false 반환
             return false;
 
-        node = Node2.insertRecursive(node, player);
+        node = Node2.insertRecursiveStatic(node, player, null);
 
         return true;
     }
@@ -127,11 +127,15 @@ public class League {
         if (!Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수가 아니라면 false 반환
             return false;
 
-        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
-        sudoparent.setLeft(node);
-        Node2.deleteRecursive(node, player, sudoparent);
+//        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
+//        sudoparent.setLeft(node);
+//        Node2.deleteRecursive(node, player, sudoparent);
+//
+//        node = sudoparent.getLeft();
+//        return true;
 
-        node = sudoparent.getLeft();
+        Node2.deleteRecursive(node, player);
+
         return true;
     }
 
