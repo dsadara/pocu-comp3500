@@ -54,6 +54,10 @@ public class Node2 {
         this.player = player;
     }
 
+    public void setParent(Node2 parent) {
+        this.parent = parent;
+    }
+
     public static boolean findRecursive(final Node2 node, Player player) {
         if (node == null)
             return false;

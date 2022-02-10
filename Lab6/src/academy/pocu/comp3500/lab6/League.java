@@ -127,14 +127,10 @@ public class League {
         if (!Node2.findRecursive(node, player))  // 이미 리그에 참여중인 선수가 아니라면 false 반환
             return false;
 
-//        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
-//        sudoparent.setLeft(node);
-//        Node2.deleteRecursive(node, player, sudoparent);
-//
-//        node = sudoparent.getLeft();
-//        return true;
-
-        Node2.deleteRecursive(node, player);
+        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
+        sudoparent.setLeft(node);
+        node.setParent(sudoparent);
+        Node2.deleteRecursive(sudoparent, player);
 
         return true;
     }
