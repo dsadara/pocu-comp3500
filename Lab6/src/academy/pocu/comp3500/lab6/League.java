@@ -93,12 +93,13 @@ public class League {
             return new Player[0];
         }
         ArrayList<Player> topPlayers = new ArrayList<>();
-        Node2.traverseInOrderRecursive(node, topPlayers);
+        Node2.traverseInOrderRecursive(node, topPlayers, count);
 
-        if (topPlayers.size() < count)
-            return topPlayers.toArray(new Player[0]);
-
-        return topPlayers.subList(0, count).toArray(new Player[0]);
+//        if (topPlayers.size() < count)
+//            return topPlayers.toArray(new Player[0]);
+//
+//        return topPlayers.subList(0, count).toArray(new Player[0]);
+        return topPlayers.toArray(new Player[0]);
     }
 
     public Player[] getBottom(final int count) {
@@ -106,12 +107,13 @@ public class League {
             return new Player[0];
         }
         ArrayList<Player> topPlayers = new ArrayList<>();
-        Node2.traverseInOrderRecursive3(node, topPlayers);
+        Node2.traverseInOrderRecursive3(node, topPlayers, count);
 
-        if (topPlayers.size() < count)
-            return topPlayers.toArray(new Player[0]);
-
-        return topPlayers.subList(0, count).toArray(new Player[0]);
+//        if (topPlayers.size() < count)
+//            return topPlayers.toArray(new Player[0]);
+//
+//        return topPlayers.subList(0, count).toArray(new Player[0]);
+        return topPlayers.toArray(new Player[0]);
     }
 
     public boolean join(final Player player) {
