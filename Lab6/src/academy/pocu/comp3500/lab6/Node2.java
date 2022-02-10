@@ -177,26 +177,22 @@ public class Node2 {
         return findNextRecursive(node.left);
     }
 
-    public static void traverseInOrderRecursive(final Node2 node, ArrayList<Player> players, int count) {
-        if (players.size() == count)
-            return;
+    public static void traverseInOrderRecursive(final Node2 node, ArrayList<Player> players) {
         if (node == null)
             return;
 
-        traverseInOrderRecursive(node.right, players, count);
+        traverseInOrderRecursive(node.right, players);
         players.add(node.player);
-        traverseInOrderRecursive(node.left, players, count);
+        traverseInOrderRecursive(node.left, players);
     }
 
-    public static void traverseInOrderRecursive3(final Node2 node, ArrayList<Player> players, int count) {
-        if (players.size() == count)
-            return;
+    public static void traverseInOrderRecursive3(final Node2 node, ArrayList<Player> players) {
         if (node == null)
             return;
 
-        traverseInOrderRecursive3(node.left, players, count);
+        traverseInOrderRecursive3(node.left, players);
         players.add(node.player);
-        traverseInOrderRecursive3(node.right, players, count);
+        traverseInOrderRecursive3(node.right, players);
     }
 
 }
