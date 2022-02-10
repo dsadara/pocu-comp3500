@@ -95,6 +95,9 @@ public class League {
         ArrayList<Player> topPlayers = new ArrayList<>();
         Node2.traverseInOrderRecursive(node, topPlayers);
 
+        if (topPlayers.size() < count)
+            return topPlayers.toArray(new Player[0]);
+
         return topPlayers.subList(0, count).toArray(new Player[0]);
     }
 
@@ -104,6 +107,9 @@ public class League {
         }
         ArrayList<Player> topPlayers = new ArrayList<>();
         Node2.traverseInOrderRecursive3(node, topPlayers);
+
+        if (topPlayers.size() < count)
+            return topPlayers.toArray(new Player[0]);
 
         return topPlayers.subList(0, count).toArray(new Player[0]);
     }
