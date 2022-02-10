@@ -21,6 +21,10 @@ public class Node2 {
         return this.player.getRating();
     }
 
+    public Player getPlayer() {
+        return this.player;
+    }
+
 //    public void setRating(Player player) {
 //        this.data = data;
 //    }
@@ -51,6 +55,28 @@ public class Node2 {
             return findRecursive(node.right, player);
         } else {    // player.getRating() == node.getRating()
             return true;
+        }
+    }
+
+    public static Node2 findRecursive2(final Node2 node, Player player) {
+        if (player.getRating() < node.getRating()) {
+            return findRecursive2(node.left, player);
+        } else if (player.getRating() > node.getRating()) {
+            return findRecursive2(node.right, player);
+        } else {    // player.getRating() == node.getRating()
+            return node;
+        }
+    }
+
+    public static Node2 findParentRecursive(final Node2 node, Player player, Node2 parent) {
+        if (player.getRating() < node.getRating()) {
+            parent = node;
+            return findParentRecursive(node.left, player, parent);
+        } else if (player.getRating() > node.getRating()) {
+            parent = node;
+            return findParentRecursive(node.right, player, parent);
+        } else {    // player.getRating() == node.getRating()
+            return parent;
         }
     }
 
@@ -137,6 +163,18 @@ public class Node2 {
         if (node.right == null)
             return parent;
         return findPriorParentRecursive(node.right, node);
+    }
+
+    public static Node2 findPriorRecursive(final Node2 node) {
+        if (node.right == null)
+            return node;
+        return findPriorRecursive(node.right);
+    }
+
+    public static Node2 findNextRecursive(final Node2 node) {
+        if (node.left == null)
+            return node;
+        return findNextRecursive(node.left);
     }
 
     public static void traverseInOrderRecursive(final Node2 node, ArrayList<Player> players) {
