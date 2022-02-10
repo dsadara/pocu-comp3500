@@ -18,10 +18,15 @@ public class League {
     }
 
     public Player findMatchOrNull(final Player player) {
+        if (node == null)
+            return null;
+        if (node.getLeft() == null && node.getRight() == null)
+            return null;
+        if (!Node2.findRecursive(node, player))
+            return null;
         ArrayList<Player> players = new ArrayList<>();
         Node2.traverseInOrderRecursive3(node, players);
 
-        players.remove(player);
         int matchPlayerIndex = 0;
         for (int i = 0; i < players.size(); i++) {
             if (Math.abs(players.get(i).getRating() - player.getRating()) <= Math.abs(players.get(matchPlayerIndex).getRating() - player.getRating())) {
