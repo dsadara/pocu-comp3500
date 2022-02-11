@@ -145,27 +145,36 @@ public class Node2 {
             deleteRecursive(node.left, player);
         } else if (player.getRating() > node.getRating()){    // data >= node.data
             deleteRecursive(node.right, player);
-        } else {
+        } else {    // 샂제할 노드를 찾았을 때
             if (node.getLeft() == null && node.getRight() == null) {    // 삭제하는 노드가 리프 노드인 경우
                 if (node.getParent().getLeft() == node)
                     node.getParent().setLeft(null);
                 else
                     node.getParent().setRight(null);
-            } else if (node.getLeft() == null) {                // 삭제하는 노드 왼쪽자식이 없을 때
-                if (node.getParent().getLeft() == node)
-                    node.getParent().setLeft(node.getRight());
-                else
-                    node.getParent().setRight(node.getRight());
-            } else if (node.getRight() == null) {               // 삭제하는 노드 오른쪽자식이 없을 때
-                if (node.getParent().getLeft() == node)
-                    node.getParent().setLeft(node.getLeft());
-                else
-                    node.getParent().setRight(node.getLeft());
-            } else {                                            // 삭제하는 노드 두 자식이 존재할 때
-                Node2 predecessor = Node2.findMax(node.getLeft());
-                node.setPlayer(predecessor.getPlayer());
-                predecessor.getParent().setRight(null);
             }
+//            else if (node.getLeft() == null) {                // 삭제하는 노드 왼쪽자식이 없을 때
+//                if (node.getParent().getLeft() == node)
+//                    node.getParent().setLeft(node.getRight());
+//                else
+//                    node.getParent().setRight(node.getRight());
+//            } else if (node.getRight() == null) {               // 삭제하는 노드 오른쪽자식이 없을 때
+//                if (node.getParent().getLeft() == node)
+//                    node.getParent().setLeft(node.getLeft());
+//                else
+//                    node.getParent().setRight(node.getLeft());
+//            } else {                                            // 삭제하는 노드 두 자식이 존재할 때
+//                Node2 predecessor = Node2.findMax(node.getLeft());
+//                node.setPlayer(predecessor.getPlayer());
+//                predecessor.getParent().setRight(null);
+//            }
+            if (node.getLeft() == null) {
+                Node2 successor = Node2.findMin(node.getRight());
+                node.setPlayer(successor.getPlayer());
+                successor.getParent().setLeft(null);
+            }
+            Node2 predecessor = Node2.findMax(node.getLeft());
+            node.setPlayer(predecessor.getPlayer());
+            predecessor.getParent().setRight(null);
         }
         return;
     }
