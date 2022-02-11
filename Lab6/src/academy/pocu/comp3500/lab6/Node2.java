@@ -153,12 +153,22 @@ public class Node2 {
                     node.getParent().setRight(null);
             } else if (node.getLeft() == null) {
                 Node2 successor = Node2.findMin(node.getRight());
-                node.setPlayer(successor.getPlayer());
-                successor.getParent().setLeft(null);
+                if (successor == node.getRight()) { // node의 자식 노드가 successor 일 때
+                    node.setPlayer(successor.getPlayer());
+                    node.setRight(successor.getRight());
+                } else {
+                    node.setPlayer(successor.getPlayer());
+                    successor.getParent().setLeft(null);
+                }
             } else {
                 Node2 predecessor = Node2.findMax(node.getLeft());
-                node.setPlayer(predecessor.getPlayer());
-                predecessor.getParent().setRight(null);
+                if (predecessor == node.getLeft()) {    // node의 자식 노드가 predcessor 일 때
+                    node.setPlayer(predecessor.getPlayer());
+                    node.setLeft(predecessor.getLeft());
+                } else {
+                    node.setPlayer(predecessor.getPlayer());
+                    predecessor.getParent().setRight(null);
+                }
             }
         }
         return;
