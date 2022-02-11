@@ -4,6 +4,9 @@ import academy.pocu.comp3500.lab6.leagueofpocu.Player;
 
 import java.util.ArrayList;
 
+import static academy.pocu.comp3500.lab6.Node2.findPredecessor;
+import static academy.pocu.comp3500.lab6.Node2.findSuccessor;
+
 public class League {
 
     private Node2 node;
@@ -25,66 +28,88 @@ public class League {
         if (!Node2.findRecursive(node, player))     // 매칭할 선수가 리그에 없는 경우
             return null;
 
-        Node2 sudoRoot = new Node2(new Player(Integer.MAX_VALUE, "???", Integer.MAX_VALUE));
-        sudoRoot.setLeft(this.node);
+        Node2 predecessor = findPredecessor(this.node, null, player);
+        Node2 successor = findSuccessor(this.node, null, player);
 
-        Node2 playerNode = Node2.findRecursiveReturnNode(this.node, player);
-        Node2 playerNodeParent = Node2.findParentRecursive(sudoRoot, player, null);
-        Node2 playerNodeGrandParent = Node2.findParentRecursive(sudoRoot, playerNodeParent.getPlayer(), null);
-        Node2 priorNode = null;
-        Node2 nextNode = null;
-        if (playerNode.getLeft() != null)
-            priorNode = Node2.findPriorRecursive(playerNode.getLeft());
-        if (playerNode.getRight() != null)
-            nextNode = Node2.findNextRecursive(playerNode.getRight());
+        int predDist;
+        int succrDist;
 
-        if (priorNode == null && nextNode == null) {
-            int parentDist = player.getRating() - playerNodeParent.getRating();
-            int grandParentDist = player.getRating() - playerNodeGrandParent.getRating();
-            if (Math.abs(parentDist) < Math.abs(grandParentDist))
-                return playerNodeParent.getPlayer();
-            else if (Math.abs(parentDist) > Math.abs(grandParentDist))
-                return playerNodeGrandParent.getPlayer();
-            else {  // parentDist == grandParentDist
-                if (parentDist < 0)
-                    return playerNodeParent.getPlayer();
-                else
-                    return playerNodeGrandParent.getPlayer();
-            }
-        } else if (priorNode == null) {
-            int parentDist = player.getRating() - playerNodeParent.getRating();
-            int nextDist = Math.abs(player.getRating() - nextNode.getRating());
-            if (Math.abs(parentDist) < Math.abs(nextDist))
-                return playerNodeParent.getPlayer();
-            else if (Math.abs(parentDist) > Math.abs(nextDist))
-                return nextNode.getPlayer();
-            else {  // nextDist == grandParentDist
-                if (parentDist < 0)
-                    return playerNodeParent.getPlayer();
-                else
-                    return nextNode.getPlayer();
-            }
-        } else if (nextNode == null) {
-            int parentDist = player.getRating() - playerNodeParent.getRating();
-            int priorDist = Math.abs(player.getRating() - priorNode.getRating());
-            if (Math.abs(parentDist) < Math.abs(priorDist))
-                return playerNodeParent.getPlayer();
-            else if (Math.abs(parentDist) > Math.abs(priorDist))
-                return priorNode.getPlayer();
-            else {  // priorDist == grandParentDist
-                if (parentDist < 0)
-                    return playerNodeParent.getPlayer();
-                else
-                    return priorNode.getPlayer();
-            }
-        } else {    // priorNode != null && nextNode != null
-            int nextDist = Math.abs(player.getRating() - nextNode.getRating());
-            int priorDist = Math.abs(player.getRating() - priorNode.getRating());
-            if (nextDist <= priorDist)
-                return nextNode.getPlayer();
-            else
-                return priorNode.getPlayer();
-        }
+        if (predecessor == null)
+            predDist = Integer.MAX_VALUE;
+        else
+            predDist = player.getRating() - predecessor.getRating();
+        if (successor == null)
+            succrDist = Integer.MAX_VALUE;
+        else
+            succrDist = successor.getRating() - player.getRating();
+
+        if (predDist > succrDist)
+            return successor.getPlayer();
+        else if (predDist < succrDist)
+            return predecessor.getPlayer();
+        else    // predecessor == sucessor
+            return successor.getPlayer();
+
+//        Node2 sudoRoot = new Node2(new Player(Integer.MAX_VALUE, "???", Integer.MAX_VALUE));
+//        sudoRoot.setLeft(this.node);
+//
+//        Node2 playerNode = Node2.findRecursiveReturnNode(this.node, player);
+//        Node2 playerNodeParent = Node2.findParentRecursive(sudoRoot, player, null);
+//        Node2 playerNodeGrandParent = Node2.findParentRecursive(sudoRoot, playerNodeParent.getPlayer(), null);
+//        Node2 priorNode = null;
+//        Node2 nextNode = null;
+//        if (playerNode.getLeft() != null)
+//            priorNode = Node2.findPriorRecursive(playerNode.getLeft());
+//        if (playerNode.getRight() != null)
+//            nextNode = Node2.findNextRecursive(playerNode.getRight());
+//
+//        if (priorNode == null && nextNode == null) {
+//            int parentDist = player.getRating() - playerNodeParent.getRating();
+//            int grandParentDist = player.getRating() - playerNodeGrandParent.getRating();
+//            if (Math.abs(parentDist) < Math.abs(grandParentDist))
+//                return playerNodeParent.getPlayer();
+//            else if (Math.abs(parentDist) > Math.abs(grandParentDist))
+//                return playerNodeGrandParent.getPlayer();
+//            else {  // parentDist == grandParentDist
+//                if (parentDist < 0)
+//                    return playerNodeParent.getPlayer();
+//                else
+//                    return playerNodeGrandParent.getPlayer();
+//            }
+//        } else if (priorNode == null) {
+//            int parentDist = player.getRating() - playerNodeParent.getRating();
+//            int nextDist = Math.abs(player.getRating() - nextNode.getRating());
+//            if (Math.abs(parentDist) < Math.abs(nextDist))
+//                return playerNodeParent.getPlayer();
+//            else if (Math.abs(parentDist) > Math.abs(nextDist))
+//                return nextNode.getPlayer();
+//            else {  // nextDist == grandParentDist
+//                if (parentDist < 0)
+//                    return playerNodeParent.getPlayer();
+//                else
+//                    return nextNode.getPlayer();
+//            }
+//        } else if (nextNode == null) {
+//            int parentDist = player.getRating() - playerNodeParent.getRating();
+//            int priorDist = Math.abs(player.getRating() - priorNode.getRating());
+//            if (Math.abs(parentDist) < Math.abs(priorDist))
+//                return playerNodeParent.getPlayer();
+//            else if (Math.abs(parentDist) > Math.abs(priorDist))
+//                return priorNode.getPlayer();
+//            else {  // priorDist == grandParentDist
+//                if (parentDist < 0)
+//                    return playerNodeParent.getPlayer();
+//                else
+//                    return priorNode.getPlayer();
+//            }
+//        } else {    // priorNode != null && nextNode != null
+//            int nextDist = Math.abs(player.getRating() - nextNode.getRating());
+//            int priorDist = Math.abs(player.getRating() - priorNode.getRating());
+//            if (nextDist <= priorDist)
+//                return nextNode.getPlayer();
+//            else
+//                return priorNode.getPlayer();
+//        }
 
     }
 

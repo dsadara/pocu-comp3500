@@ -30,10 +30,6 @@ public class Node2 {
         return this.parent;
     }
 
-//    public void setRating(Player player) {
-//        this.data = data;
-//    }
-
     public Node2 getLeft() {
         return this.left;
     }
@@ -145,7 +141,6 @@ public class Node2 {
 //    }
 
     public static void deleteRecursive(Node2 node, Player player) {
-
         if (player.getRating() < node.getRating()) {
             deleteRecursive(node.left, player);
         } else if (player.getRating() > node.getRating()){    // data >= node.data
@@ -171,17 +166,54 @@ public class Node2 {
                 node.setPlayer(predecessor.getPlayer());
                 predecessor.getParent().setRight(null);
             }
-
         }
-
         return;
+    }
+
+    public static Node2 findPredecessor(Node2 node, Node2 pred, Player player) {
+        if (node == null)
+            return pred;
+
+        if (node.getRating() > player.getRating()) {
+            return findPredecessor(node.left, pred, player);
+        } else if (node.getRating() < player.getRating()) {
+            pred = node;
+            return findPredecessor(node.right, pred, player);
+        } else {    // node.getRating() == player.getRating()
+            if (node.left != null)
+                return findMax(node.left);
+        }
+        return pred;
+    }
+
+    public static Node2 findSuccessor(Node2 node, Node2 succr, Player player) {
+        if (node == null)
+            return succr;
+
+        if (node.getRating() > player.getRating()) {
+            succr = node;
+            return findSuccessor(node.left, succr, player);
+        } else if (node.getRating() < player.getRating()) {
+            return findSuccessor(node.right, succr, player);
+        } else {         // node.getRating() == player.getRating()
+            if (node.right != null)
+                return findMin(node.right);
+        }
+        return succr;
     }
 
     public static Node2 findMax(Node2 node) {
         if (node.right == null)
             return node;
 
-        return findMax(node);
+        return findMax(node.right);
+    }
+
+    public static Node2 findMin(Node2 node) {
+        if (node.left == null)
+            return node;
+
+        return findMin(node.left);
     }
 
 //    public static boolean deleteRecursive(Node2 node, Player player, Node2 parent) {
