@@ -101,7 +101,7 @@ public class League {
         node.setParent(sudoparent);
 
         Node2.deleteRecursive(sudoparent, player);
-
+        node = sudoparent.getLeft();
         return true;
     }
 
