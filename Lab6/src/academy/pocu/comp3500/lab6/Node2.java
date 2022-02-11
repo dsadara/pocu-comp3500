@@ -151,30 +151,15 @@ public class Node2 {
                     node.getParent().setLeft(null);
                 else
                     node.getParent().setRight(null);
-            }
-//            else if (node.getLeft() == null) {                // 삭제하는 노드 왼쪽자식이 없을 때
-//                if (node.getParent().getLeft() == node)
-//                    node.getParent().setLeft(node.getRight());
-//                else
-//                    node.getParent().setRight(node.getRight());
-//            } else if (node.getRight() == null) {               // 삭제하는 노드 오른쪽자식이 없을 때
-//                if (node.getParent().getLeft() == node)
-//                    node.getParent().setLeft(node.getLeft());
-//                else
-//                    node.getParent().setRight(node.getLeft());
-//            } else {                                            // 삭제하는 노드 두 자식이 존재할 때
-//                Node2 predecessor = Node2.findMax(node.getLeft());
-//                node.setPlayer(predecessor.getPlayer());
-//                predecessor.getParent().setRight(null);
-//            }
-            if (node.getLeft() == null) {
+            } else if (node.getLeft() == null) {
                 Node2 successor = Node2.findMin(node.getRight());
                 node.setPlayer(successor.getPlayer());
                 successor.getParent().setLeft(null);
+            } else {
+                Node2 predecessor = Node2.findMax(node.getLeft());
+                node.setPlayer(predecessor.getPlayer());
+                predecessor.getParent().setRight(null);
             }
-            Node2 predecessor = Node2.findMax(node.getLeft());
-            node.setPlayer(predecessor.getPlayer());
-            predecessor.getParent().setRight(null);
         }
         return;
     }
