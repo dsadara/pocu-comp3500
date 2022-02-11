@@ -96,14 +96,14 @@ public class League {
             return true;
         }
 
-        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
-        sudoparent.setLeft(node);
-        node.setParent(sudoparent);
+//        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
+//        sudoparent.setLeft(node);
+//        node.setParent(sudoparent);
 
-        Node2.deleteRecursive(sudoparent, player);
-        node = sudoparent.getLeft();
-        sudoparent.setPlayer(null);
-        node.setParent(null);
+        node = Node2.deleteRecursive(node, player);
+//        node = sudoparent.getLeft();
+//        sudoparent.setPlayer(null);
+//        node.setParent(null);
         return true;
     }
 
