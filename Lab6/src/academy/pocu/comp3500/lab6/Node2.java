@@ -140,39 +140,39 @@ public class Node2 {
 //        return node;
 //    }
 
-    public static void deleteRecursive(Node2 node, Player player) {
-        if (player.getRating() < node.getRating()) {
-            deleteRecursive(node.left, player);
-        } else if (player.getRating() > node.getRating()){    // data >= node.data
-            deleteRecursive(node.right, player);
-        } else {    // 샂제할 노드를 찾았을 때
-            if (node.getLeft() == null && node.getRight() == null) {    // 삭제하는 노드가 리프 노드인 경우
-                if (node.getParent().getLeft() == node)
-                    node.getParent().setLeft(null);
-                else
-                    node.getParent().setRight(null);
-            } else if (node.getLeft() == null) {
-                Node2 successor = Node2.findMin(node.getRight());
-                if (successor == node.getRight()) { // node의 자식 노드가 successor 일 때
-                    node.setPlayer(successor.getPlayer());
-                    node.setRight(successor.getRight());
-                } else {
-                    node.setPlayer(successor.getPlayer());
-                    successor.getParent().setLeft(null);
-                }
-            } else {
-                Node2 predecessor = Node2.findMax(node.getLeft());
-                if (predecessor == node.getLeft()) {    // node의 자식 노드가 predcessor 일 때
-                    node.setPlayer(predecessor.getPlayer());
-                    node.setLeft(predecessor.getLeft());
-                } else {
-                    node.setPlayer(predecessor.getPlayer());
-                    predecessor.getParent().setRight(null);
-                }
-            }
-        }
-        return;
-    }
+//    public static void deleteRecursive(Node2 node, Player player) {
+//        if (player.getRating() < node.getRating()) {
+//            deleteRecursive(node.left, player);
+//        } else if (player.getRating() > node.getRating()){    // data >= node.data
+//            deleteRecursive(node.right, player);
+//        } else {    // 샂제할 노드를 찾았을 때
+//            if (node.getLeft() == null && node.getRight() == null) {    // 삭제하는 노드가 리프 노드인 경우
+//                if (node.getParent().getLeft() == node)
+//                    node.getParent().setLeft(null);
+//                else
+//                    node.getParent().setRight(null);
+//            } else if (node.getLeft() == null) {
+//                Node2 successor = Node2.findMin(node.getRight());
+//                if (successor == node.getRight()) { // node의 자식 노드가 successor 일 때
+//                    node.setPlayer(successor.getPlayer());
+//                    node.setRight(successor.getRight());
+//                } else {
+//                    node.setPlayer(successor.getPlayer());
+//                    successor.getParent().setLeft(null);
+//                }
+//            } else {
+//                Node2 predecessor = Node2.findMax(node.getLeft());
+//                if (predecessor == node.getLeft()) {    // node의 자식 노드가 predcessor 일 때
+//                    node.setPlayer(predecessor.getPlayer());
+//                    node.setLeft(predecessor.getLeft());
+//                } else {
+//                    node.setPlayer(predecessor.getPlayer());
+//                    predecessor.getParent().setRight(null);
+//                }
+//            }
+//        }
+//        return;
+//    }
 
     public static Node2 findPredecessor(Node2 node, Node2 pred, Player player) {
         if (node == null)
@@ -220,55 +220,54 @@ public class Node2 {
         return findMin(node.left);
     }
 
-//    public static boolean deleteRecursive(Node2 node, Player player, Node2 parent) {
-//        if (node == null)       // 삭제할 노드가 없으면 null 반환
-//            return false;
-//
-//        Boolean isNodeFinded = true;
-//
-//        if (player.getRating() < node.getRating()) {
-//            isNodeFinded = deleteRecursive(node.left, player, node);
-//        } else if (player.getRating() == node.getRating()) {
-//            //  삭제할 노드의 자식이 0인경우
-//            if (node.left == null && node.right == null) {
-//                if (parent.left == node)
-//                    parent.left = null;
-//                else
-//                    parent.right = null;
-//            } else if (node.left == null) {     // 삭제할 노드의 자식이 1인 경우
-//                if (parent.left == node)
-//                    parent.left = node.right;
-//                else
-//                    parent.right = node.right;
-//            } else if (node.right == null) {
-//                if (parent.left == node)
-//                    parent.left = node.left;
-//                else
-//                    parent.right = node.left;
-//            } else {     // 삭제할 노드의 자식이 2인경우
+    public static boolean deleteRecursive(Node2 node, Player player) {
+        if (node == null)       // 삭제할 노드가 없으면 null 반환
+            return false;
+
+        Boolean isNodeFinded = true;
+
+        if (player.getRating() < node.getRating()) {
+            isNodeFinded = deleteRecursive(node.left, player);
+        } else if (player.getRating() == node.getRating()) {
+            //  삭제할 노드의 자식이 0인경우
+            if (node.left == null && node.right == null) {
+                if (node.getParent().getLeft() == node)
+                    node.getParent().setLeft(null);
+                else
+                    node.getParent().setRight(null);
+            } else if (node.left == null) {     // 삭제할 노드의 자식이 1인 경우
+                if (node.getParent().getLeft() == node)
+                    node.getParent().setLeft(node.right);
+                else
+                    node.getParent().setRight(node.right);
+            } else if (node.right == null) {
+                if (node.getParent().getLeft() == node)
+                    node.getParent().setLeft(node.left);
+                else
+                    node.getParent().setRight(node.left);
+            } else {     // 삭제할 노드의 자식이 2인경우
 //                Node2 priorNodeParent = findPriorParentRecursive(node.left, node);    // 왼쪽 하위 트리의 가장 오른쪽 리프 찾기
 //                System.out.println("prior: " + priorNodeParent.getRight().getRating() + " node: " + node.getRating());
-////                node.setData(priorNodeParent.getRight().getRating());   // 두 노드 교환 후 리프 노트 삭제
-////                priorNodeParent.right = null;
-//                // 노드 교환
-//                if (parent.left == node) {
-//                    priorNodeParent.right.right = node.right;
-//                    priorNodeParent.right.left = node.left;
-//                    parent.left = priorNodeParent.right;
-//                    priorNodeParent.right = null;
-//                } else {
-//                    priorNodeParent.right.right = node.right;
-//                    priorNodeParent.right.left = node.left;
-//                    parent.right = priorNodeParent.right;
-//                    priorNodeParent.right = null;
-//                }
-//            }
-//        } else {
-//            isNodeFinded = deleteRecursive(node.right, player, node);
-//        }
-//
-//        return isNodeFinded;
-//    }
+                Node2 predNode = findMax(node.left);
+                // 노드 교환
+                if (node.getParent().getLeft() == node) {
+                    predNode.getParent().getRight().setRight(node.right);
+                    predNode.getParent().getRight().setLeft(node.left);
+                    node.getParent().setLeft(predNode.getParent().getRight());
+                    predNode.getParent().setRight(null);
+                } else {
+                    predNode.getParent().getRight().setRight(node.right);
+                    predNode.getParent().getRight().setLeft(node.left);
+                    node.getParent().setRight(predNode.getParent().getRight());
+                    predNode.getParent().setRight(null);
+                }
+            }
+        } else {
+            isNodeFinded = deleteRecursive(node.right, player);
+        }
+
+        return isNodeFinded;
+    }
 
     private static Node2 findPriorParentRecursive(final Node2 node, Node2 parent) {
         if (node.right == null)

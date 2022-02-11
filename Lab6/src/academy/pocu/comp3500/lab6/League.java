@@ -96,7 +96,11 @@ public class League {
             return true;
         }
 
-        Node2.deleteRecursive(node, player);
+        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
+        sudoparent.setLeft(node);
+        node.setParent(sudoparent);
+
+        Node2.deleteRecursive(sudoparent, player);
 
         return true;
     }
