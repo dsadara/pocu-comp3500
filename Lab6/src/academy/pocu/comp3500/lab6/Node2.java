@@ -239,8 +239,7 @@ public class Node2 {
                 if (node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.right);
                     node.right.setParent(node.getParent());
-                }
-                else {
+                } else {
                     node.getParent().setRight(node.right);
                     node.right.setParent(node.getParent());
                 }
@@ -248,8 +247,7 @@ public class Node2 {
                 if (node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.left);
                     node.left.setParent(node.getParent());
-                }
-                else {
+                } else {
                     node.getParent().setRight(node.left);
                     node.left.setParent(node.getParent());
                 }
