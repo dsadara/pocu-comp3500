@@ -236,29 +236,41 @@ public class Node2 {
                 else
                     node.getParent().setRight(null);
             } else if (node.left == null) {     // 삭제할 노드의 자식이 1인 경우
-                if (node.getParent().getLeft() == node)
+                if (node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.right);
-                else
+                    node.right.setParent(node.getParent());
+                }
+                else {
                     node.getParent().setRight(node.right);
+                    node.right.setParent(node.getParent());
+                }
             } else if (node.right == null) {
-                if (node.getParent().getLeft() == node)
+                if (node.getParent().getLeft() == node) {
                     node.getParent().setLeft(node.left);
-                else
+                    node.left.setParent(node.getParent());
+                }
+                else {
                     node.getParent().setRight(node.left);
+                    node.left.setParent(node.getParent());
+                }
             } else {     // 삭제할 노드의 자식이 2인경우
 //                Node2 priorNodeParent = findPriorParentRecursive(node.left, node);    // 왼쪽 하위 트리의 가장 오른쪽 리프 찾기
 //                System.out.println("prior: " + priorNodeParent.getRight().getRating() + " node: " + node.getRating());
                 Node2 predNode = findMax(node.left);
                 // 노드 교환
                 if (node.getParent().getLeft() == node) {
-                    predNode.getParent().getRight().setRight(node.right);
-                    predNode.getParent().getRight().setLeft(node.left);
-                    node.getParent().setLeft(predNode.getParent().getRight());
+//                    predNode.getParent().getRight().setRight(node.right);
+//                    predNode.getParent().getRight().setLeft(node.left);
+//                    node.getParent().setLeft(predNode.getParent().getRight());
+//                    predNode.getParent().setRight(null);
+                    node.setPlayer(predNode.getPlayer());
                     predNode.getParent().setRight(null);
                 } else {
-                    predNode.getParent().getRight().setRight(node.right);
-                    predNode.getParent().getRight().setLeft(node.left);
-                    node.getParent().setRight(predNode.getParent().getRight());
+//                    predNode.getParent().getRight().setRight(node.right);
+//                    predNode.getParent().getRight().setLeft(node.left);
+//                    node.getParent().setRight(predNode.getParent().getRight());
+//                    predNode.getParent().setRight(null);
+                    node.setPlayer(predNode.getPlayer());
                     predNode.getParent().setRight(null);
                 }
             }
