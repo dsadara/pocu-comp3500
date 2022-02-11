@@ -92,7 +92,7 @@ public class League {
 
         // 원소 한개인 경우 제거
         if (node.getLeft() == null && node.getRight() == null) {
-            node.setPlayer(null);
+            this.node = null;
             return true;
         }
 
