@@ -9,6 +9,7 @@ import java.util.Iterator;
 public final class Logger {
     public static LinkedList<ListElement> list = new LinkedList<>();
     static int currIndentLevel = 0;
+    static int maxIndentLevel = 0;
 
     public static void log(final String text) {
         int indentLevel = currIndentLevel;
@@ -17,20 +18,20 @@ public final class Logger {
 
     public static void printTo(final BufferedWriter writer) {
         Iterator<ListElement> iter = list.iterator();
-            try {
-                while (iter.hasNext()) {
-                    ListElement element = iter.next();
-                    // indent 출력하기
-                    for (int i = 0; i < element.indentLevel; i++) {
-                        writer.write("  ");
-                    }
-                    // text 출력하기
-                    writer.write(element.text + "\n");
+        try {
+            while (iter.hasNext()) {
+                ListElement element = iter.next();
+                // indent 출력하기
+                for (int i = 0; i < element.indentLevel; i++) {
+                    writer.write("  ");
                 }
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+                // text 출력하기
+                writer.write(element.text + System.lineSeparator());
             }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void printTo(final BufferedWriter writer, final String filter) {
@@ -38,13 +39,13 @@ public final class Logger {
         try {
             while (iter.hasNext()) {
                 ListElement element = iter.next();
-                if(element.text.contains(filter)) {
+                if (element.text.contains(filter)) {
                     // indent 출력하기
                     for (int i = 0; i < element.indentLevel; i++) {
                         writer.write("  ");
                     }
                     // text 출력하기
-                    writer.write(element.text + "\n");
+                    writer.write(element.text + System.lineSeparator());
                 }
             }
             writer.flush();
@@ -59,6 +60,10 @@ public final class Logger {
 
     public static Indent indent() {
         currIndentLevel++;
+
+        if (currIndentLevel > maxIndentLevel)
+            maxIndentLevel = currIndentLevel;
+
         return new Indent(currIndentLevel);
     }
 

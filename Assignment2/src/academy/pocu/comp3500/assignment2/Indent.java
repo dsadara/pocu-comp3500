@@ -12,7 +12,7 @@ public final class Indent {
     public void discard() {
         Iterator<ListElement> iter = Logger.list.iterator();
 
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             ListElement element = iter.next();
             if (element.indentLevel == this.indentLevel) {
                 iter.remove();
