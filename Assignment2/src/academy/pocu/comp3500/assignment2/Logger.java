@@ -29,6 +29,8 @@ public final class Logger {
                 writer.write(element.text + System.lineSeparator());
             }
             writer.flush();
+            currIndentLevel = 0;
+            maxIndentLevel = 0;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,6 +51,8 @@ public final class Logger {
                 }
             }
             writer.flush();
+            currIndentLevel = 0;
+            maxIndentLevel = 0;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,6 +60,7 @@ public final class Logger {
 
     public static void clear() {
         list.clear();
+
     }
 
     public static Indent indent() {

@@ -14,9 +14,14 @@ public final class Indent {
 
         while (iter.hasNext()) {
             ListElement element = iter.next();
-            if (element.indentLevel == this.indentLevel) {
-                iter.remove();
+            for (int i = indentLevel; i <= Logger.maxIndentLevel ; i++) {
+                if (element.indentLevel == i) {
+                    iter.remove();
+                }
             }
         }
+        if (indentLevel == 0)
+            Logger.maxIndentLevel = 0;
+        Logger.maxIndentLevel = indentLevel - 1;
     }
 }
