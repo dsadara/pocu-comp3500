@@ -21,20 +21,6 @@ public final class Indent {
     }
 
     public void discard() {
-//        Iterator<ListElement> iter = Logger.list.iterator();
-//
-//        while (iter.hasNext()) {
-//            ListElement element = iter.next();
-//            for (int i = indentLevel; i <= Logger.maxIndentLevel ; i++) {
-//                if (element.indentLevel == i) {
-//                    iter.remove();
-//                }
-//            }
-//        }
-//        if (indentLevel == 0)
-//            Logger.maxIndentLevel = 0;
-//        Logger.maxIndentLevel = indentLevel - 1;
-
         Iterator<Indent> indentIter = Logger.indentList.iterator();
         Indent currIndent;
         while (indentIter.hasNext()) {
@@ -51,12 +37,11 @@ public final class Indent {
         Indent nextIndent;
         if (indentIter.hasNext()) {     // 다음 노드 확인
             nextIndent = indentIter.next();
-        }
-        else {
+        } else {
             return;
         }
 
-        if (nextIndent.indentLevel >= this.indentLevel ) {   // 다음노드가 자식이라면
+        if (nextIndent.indentLevel >= this.indentLevel) {   // 다음노드가 자식이라면
             indentIter.remove();
             while (indentIter.hasNext()) {
                 Indent indent = indentIter.next();

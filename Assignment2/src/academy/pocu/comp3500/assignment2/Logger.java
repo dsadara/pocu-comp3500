@@ -1,6 +1,5 @@
 package academy.pocu.comp3500.assignment2;
 
-import academy.pocu.comp3500.assignment2.datastructure.ArrayList;
 import academy.pocu.comp3500.assignment2.datastructure.LinkedList;
 
 import java.io.BufferedWriter;
@@ -9,7 +8,6 @@ import java.util.Iterator;
 
 public final class Logger {
     public static LinkedList<Indent> indentList = new LinkedList<>();
-//    public static ArrayList<LinkedList<Indent>> parentList = new ArrayList<>();
     static int currIndentLevel = 0;
 
     public static void log(final String text) {
@@ -39,25 +37,6 @@ public final class Logger {
     }
 
     public static void printTo(final BufferedWriter writer, final String filter) {
-//        Iterator<ListElement> iter = list.iterator();
-//        try {
-//            while (iter.hasNext()) {
-//                ListElement element = iter.next();
-//                if (element.text.contains(filter)) {
-//                    // indent 출력하기
-//                    for (int i = 0; i < element.indentLevel; i++) {
-//                        writer.write("  ");
-//                    }
-//                    // text 출력하기
-//                    writer.write(element.text + System.lineSeparator());
-//                }
-//            }
-//            writer.flush();
-//            currIndentLevel = 0;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        // indent iterator
         Iterator<Indent> indentIter = indentList.iterator();
         try {
             while (indentIter.hasNext()) {
