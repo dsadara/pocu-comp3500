@@ -56,11 +56,11 @@ public final class Indent {
             return;
         }
 
-        if (nextIndent.indentLevel > this.indentLevel ) {   // 다음노드가 자식이라면
+        if (nextIndent.indentLevel >= this.indentLevel ) {   // 다음노드가 자식이라면
             indentIter.remove();
             while (indentIter.hasNext()) {
                 Indent indent = indentIter.next();
-                if (indent.indentLevel == this.indentLevel)
+                if (indent.indentLevel < this.indentLevel)
                     break;
                 indentIter.remove();
             }
