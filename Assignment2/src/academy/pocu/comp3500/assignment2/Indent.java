@@ -26,31 +26,17 @@ public final class Indent {
         while (indentIter.hasNext()) {
             currIndent = indentIter.next();
             if (currIndent == this) {
+                indentIter.remove();        // 해당 indent 삭제
                 break;
             }
         }
 
-        // 해당 indent 삭제
-        indentIter.remove();
-
-        // 삭제한 노드의 자식이 있으면 자식들도 삭제
-        Indent nextIndent;
-        if (indentIter.hasNext()) {     // 다음 노드 확인
-            nextIndent = indentIter.next();
-        } else {
-            return;
-        }
-
-        if (nextIndent.indentLevel >= this.indentLevel) {   // 다음노드가 자식이라면
+        // 해당 indent의 자식 또는 같은 레벨의 indent 삭제
+        while (indentIter.hasNext()) {
+            Indent indent = indentIter.next();
+            if (indent.indentLevel < this.indentLevel)
+                break;
             indentIter.remove();
-            while (indentIter.hasNext()) {
-                Indent indent = indentIter.next();
-                if (indent.indentLevel < this.indentLevel)
-                    break;
-                indentIter.remove();
-            }
         }
-
-
     }
 }

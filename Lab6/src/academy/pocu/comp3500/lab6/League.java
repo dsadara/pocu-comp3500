@@ -95,15 +95,7 @@ public class League {
             this.node = null;
             return true;
         }
-
-//        Node2 sudoparent = new Node2(new Player(Integer.MAX_VALUE, "^-^", Integer.MAX_VALUE));
-//        sudoparent.setLeft(node);
-//        node.setParent(sudoparent);
-
         node = Node2.deleteRecursive(node, player);
-//        node = sudoparent.getLeft();
-//        sudoparent.setPlayer(null);
-//        node.setParent(null);
         return true;
     }
 
