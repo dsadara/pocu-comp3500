@@ -36,6 +36,8 @@ public final class Indent {
 //        Logger.maxIndentLevel = indentLevel - 1;
 
         Logger.currIndentLevel = this.indentLevel;
+        Indent newIndent = new Indent(Logger.currIndentLevel);
+        Logger.indentList.addLast(newIndent);
 
         Iterator<Indent> indentIter = Logger.indentList.iterator();
         Indent currIndent;
@@ -58,7 +60,7 @@ public final class Indent {
             return;
         }
 
-        if (nextIndent.indentLevel < this.indentLevel ) {   // 다음노드가 자식이라면
+        if (nextIndent.indentLevel > this.indentLevel ) {   // 다음노드가 자식이라면
             indentIter.remove();
             while (indentIter.hasNext()) {
                 Indent indent = indentIter.next();
