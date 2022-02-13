@@ -142,10 +142,15 @@ public class Node2 {
             node.right = deleteRecursive(node.right, player);
         } else {    // player.getRating() == node.getRating()
             if (node.left == null && node.right == null) {      // 자식이 없을 때
+                node.setParent(null);
                 return null;
             } else if (node.left == null) {     // 오른쪽 자식만 있을 때
+                node.setParent(null);
+                node.right.setParent(node.getParent());
                 return node.right;
             } else if (node.right == null) {     // 왼쪽 자식만 있을 때
+                node.setParent(null);
+                node.left.setParent(node.getParent());
                 return node.left;
             }
             // 자식이 둘 있을 때
@@ -156,6 +161,7 @@ public class Node2 {
             } else {
                 predecessor.getParent().right = predecessor.left;
             }
+            predecessor.setParent(null);
             node.setPlayer(predecessor.getPlayer());
         }
         return node;
