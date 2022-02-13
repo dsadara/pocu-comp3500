@@ -35,10 +35,6 @@ public final class Indent {
 //            Logger.maxIndentLevel = 0;
 //        Logger.maxIndentLevel = indentLevel - 1;
 
-        Logger.currIndentLevel = this.indentLevel;
-        Indent newIndent = new Indent(Logger.currIndentLevel);
-        Logger.indentList.addLast(newIndent);
-
         Iterator<Indent> indentIter = Logger.indentList.iterator();
         Indent currIndent;
         while (indentIter.hasNext()) {
