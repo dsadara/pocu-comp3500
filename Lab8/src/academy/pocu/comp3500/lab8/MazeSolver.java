@@ -2,7 +2,11 @@ package academy.pocu.comp3500.lab8;
 
 import academy.pocu.comp3500.lab8.maze.Point;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 
 public final class MazeSolver {
     public static List<Point> findPath(final char[][] maze, final Point start) {
