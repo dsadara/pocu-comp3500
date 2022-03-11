@@ -27,6 +27,11 @@ public final class MazeSolver {
     }
 
     private static boolean findPathRecursive(final char[][] maze, final Point point, Stack<Point> points, ArrayList<Point> path) {
+        // 배열의 범위를 넘어설 경우
+        if (!(0 <= point.getX() && point.getX() < maze[0].length) || !(0 <= point.getY() && point.getY() < maze.length)) {
+            points.pop();
+            return false;
+        }
         // 벽에 막힌 경우
         if (maze[point.getY()][point.getX()] == 'x') {
             points.pop();
