@@ -19,8 +19,10 @@ public final class MazeSolver {
 
         findPathRecursive(maze, new Point(start.getX(), start.getY()), points, path);
         // remove sudopoints
-        path.remove(0);
-        path.remove(0);
+        if (!path.isEmpty()) {
+            path.remove(0);
+            path.remove(0);
+        }
         return path;
     }
 
