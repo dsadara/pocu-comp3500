@@ -2,89 +2,61 @@ package academy.pocu.comp3500.lab8;
 
 import academy.pocu.comp3500.lab8.maze.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public final class MazeSolver {
     public static List<Point> findPath(final char[][] maze, final Point start) {
-        Stack<Point> points = new Stack<>();
+        Queue<Node> queue = new LinkedList<>();
         ArrayList<Point> path = new ArrayList<>();
 
-        Point sudoPoint1 = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        Point sudoPoint2 = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
-        points.push(sudoPoint1);
-        points.push(sudoPoint2);
-        points.push(start);
+        Node sudoParent = new Node(null, null);
+        queue.add(new Node(start, sudoParent));
 
-        findPathRecursive(maze, new Point(start.getX(), start.getY()), points, path);
-        // remove sudopoints
-        if (!path.isEmpty()) {
-            path.remove(0);
-            path.remove(0);
+        while (!queue.isEmpty()) {
+            Node next = queue.remove();
+
+            // visit
+            if (maze[next.getPoint().getY()][next.getPoint().getX()] == 'E') {
+                while (next.getPoint() != null) {
+                    path.add(0, next.getPoint());
+                    next = next.getParent();
+                }
+                return path;
+            }
+
+
+            // add child
+            Point child = new Point(next.getPoint().getX(), next.getPoint().getY() - 1);
+            Node node = new Node(child, next);
+            if ((0 <= child.getX() && child.getX() < maze[0].length) && (0 <= child.getY() && child.getY() < maze.length)) {
+                if (maze[child.getY()][child.getX()] != 'x') {
+                    queue.add(node);
+                }
+            }
+            child = new Point(next.getPoint().getX() + 1, next.getPoint().getY());
+            node = new Node(child, next);
+            if ((0 <= child.getX() && child.getX() < maze[0].length) && (0 <= child.getY() && child.getY() < maze.length)) {
+                if (maze[child.getY()][child.getX()] != 'x') {
+                    queue.add(node);
+                }
+            }
+            child = new Point(next.getPoint().getX(), next.getPoint().getY() + 1);
+            node = new Node(child, next);
+            if ((0 <= child.getX() && child.getX() < maze[0].length) && (0 <= child.getY() && child.getY() < maze.length)) {
+                if (maze[child.getY()][child.getX()] != 'x') {
+                    queue.add(node);
+                }
+            }
+            child = new Point(next.getPoint().getX() - 1, next.getPoint().getY());
+            node = new Node(child, next);
+            if ((0 <= child.getX() && child.getX() < maze[0].length) && (0 <= child.getY() && child.getY() < maze.length)) {
+                if (maze[child.getY()][child.getX()] != 'x') {
+                    queue.add(node);
+                }
+            }
+            maze[next.getPoint().getY()][next.getPoint().getX()] = 'x';
         }
         return path;
     }
 
-    private static boolean findPathRecursive(final char[][] maze, final Point point, Stack<Point> points, ArrayList<Point> path) {
-        // 배열의 범위를 넘어설 경우
-        if (!(0 <= point.getX() && point.getX() < maze[0].length) || !(0 <= point.getY() && point.getY() < maze.length)) {
-            points.pop();
-            return false;
-        }
-        // 벽에 막힌 경우
-        if (maze[point.getY()][point.getX()] == 'x') {
-            points.pop();
-            return false;
-        }
-        // 출구를 찾은 경우
-        if (maze[point.getY()][point.getX()] == 'E') {
-            while (!points.empty()) {
-                path.add(0, points.pop());
-            }
-            return true;
-        }
-
-        Point nextPoint;
-        Point currPoint = points.pop();
-        Point priorPoint = points.peek();
-        points.push(currPoint);
-
-        // go up
-        nextPoint = new Point(point.getX(), point.getY() - 1);
-        if (!(nextPoint.getX() == priorPoint.getX() && nextPoint.getY() == priorPoint.getY())) {
-            points.push(nextPoint);
-            boolean isExitfinded = findPathRecursive(maze, nextPoint, points, path);
-            if (isExitfinded)
-                return isExitfinded;
-
-        }
-        // go right
-        nextPoint = new Point(point.getX() + 1, point.getY());
-        if (!(nextPoint.getX() == priorPoint.getX() && nextPoint.getY() == priorPoint.getY())) {
-            points.push(nextPoint);
-            boolean isExitfinded = findPathRecursive(maze, nextPoint, points, path);
-            if (isExitfinded)
-                return isExitfinded;
-        }
-        // go down
-        nextPoint = new Point(point.getX(), point.getY() + 1);
-        if (!(nextPoint.getX() == priorPoint.getX() && nextPoint.getY() == priorPoint.getY())) {
-            points.push(nextPoint);
-            boolean isExitfinded = findPathRecursive(maze, nextPoint, points, path);
-            if (isExitfinded)
-                return isExitfinded;
-        }
-        // go left
-        nextPoint = new Point(point.getX() - 1, point.getY());
-        if (!(nextPoint.getX() == priorPoint.getX() && nextPoint.getY() == priorPoint.getY())) {
-            points.push(nextPoint);
-            boolean isExitfinded = findPathRecursive(maze, nextPoint, points, path);
-            if (isExitfinded)
-                return isExitfinded;
-        }
-
-        points.pop();
-        return false;
-    }
 }
