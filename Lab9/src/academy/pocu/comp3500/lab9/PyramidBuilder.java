@@ -42,7 +42,18 @@ Loop1:      while (!widthList.isEmpty()) {
             int window_start = 0;
             while (sumOfLevel <= priorLevelWidths) {
                 if (widthList.size() - 1 < window_start + minStoneNum - 1)  // 슬라이딩 윈도우가 리스트의 범위를 벗어나면 break
+                {
+
+                    if (widthList.size() >= minStoneNum) {
+                        int levelSum = 0;
+                        for (Integer element : widthList) {
+                            levelSum += element;
+                        }
+                        pyramid.add(levelSum);
+                    }
                     break Loop1;
+                }
+
                 level.clear();
                 sumOfLevel = 0;
                 for (int i = 0; i < minStoneNum; i++) {
