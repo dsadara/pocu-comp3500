@@ -8,68 +8,46 @@ public class PyramidBuilder {
         // 정렬
         Arrays.sort(widths);
         ArrayList<Integer> widthList = new ArrayList<>();   // widths 배열을 복사할 리스트
-        ArrayList<Integer> pyramid = new ArrayList<>(); // 각 level의 너비 총합을 저장하는 리스트, 0번 인덱스에 조각상 위치
-        pyramid.add(statue);    // 제일 위층에 조각상 올려놓기
+        ArrayList<Integer> pyramid = new ArrayList<>(); // 각 level의 너비 총합을 저장하는 리스트, 0번 인덱스에 동상 위치
+        ArrayList<Integer> level = new ArrayList<>();   // 각 level에 들어가는 돌들의 인덱스를 저장하는 임시 리스트
+        pyramid.add(1);    // 제일 위층에 동상 올려놓기
 
         // widths 배열 리스트에 복사
         for (int width : widths) {
             widthList.add(width);
         }
 
-        // pyramid 리스트 채우는 반복문, 한번 반복시마다 level 하나가 채워짐
-Loop1:      while (!widthList.isEmpty()) {
-            int minStoneNum = pyramid.size() + 1;
-            int sumOfLevel = 0;
-            ArrayList<Integer> level = new ArrayList<>();
-            int priorLevelWidths = pyramid.get(pyramid.size() - 1);
+        // 동상 바로 밑층 돌 쌓기
+        int sumOfLevel = 0;
+        int minStoneNum = 2;
+        int endIndex = minStoneNum - 1;
+        while (sumOfLevel <= statue) {
+            sumOfLevel = 0;
+            if (endIndex > widthList.size() - 1) {
+                return 0;
+            }
+            for (int i = 0; i <= endIndex; i++) {
+                sumOfLevel += widthList.get(i);
+            }
+            endIndex++;
+        }
+        endIndex--;
+        pyramid.add(endIndex + 1);
+        for (int i = 0; i <= endIndex; i++) {
+            widthList.remove(0);
+        }
 
-            // widthList에 남아있는 원소가 minStoneNum보다 작을때
-            if (minStoneNum > widthList.size()) {
-                // 조각상만 있을 때
-//                if (pyramid.size() == 1) {
-//                    break;
-//                }
-//                int levelSum = 0;
-//                for (Integer element : widthList) {
-//                    levelSum += element;
-//                }
-//                if (levelSum > pyramid.get(pyramid.size() - 1))
-//                    pyramid.add(levelSum);
+        // 나머지 돌 쌓기
+        while (!widthList.isEmpty()) {
+            minStoneNum = pyramid.get(pyramid.size() - 1) + 1;  // 위층의 돌 개수보다 많아야 함
+            endIndex =  minStoneNum - 1;
+            if (minStoneNum > widthList.size()) {  // 남아있는 돌의 개수보다, 최소 쌓아야 하는 돌의 개수가더 많으면 쌓지않음
                 break;
             }
-
-            // 슬라이딩 윈도우로 level 조건에 맞는 원소 조합 찾기
-            int window_start = 0;
-            while (sumOfLevel <= priorLevelWidths) {
-                if (widthList.size() - 1 < window_start + minStoneNum - 1)  // 슬라이딩 윈도우가 리스트의 범위를 벗어나면 break
-                {
-
-                    if (widthList.size() >= minStoneNum) {
-                        int levelSum = 0;
-                        for (Integer element : widthList) {
-                            levelSum += element;
-                        }
-                        pyramid.add(levelSum);
-                    }
-                    break Loop1;
-                }
-
-                level.clear();
-                sumOfLevel = 0;
-                for (int i = 0; i < minStoneNum; i++) {
-                    level.add(widthList.get(window_start + i));
-                    sumOfLevel += widthList.get(window_start + i);
-                }
-                window_start++;
+            pyramid.add(endIndex + 1);
+            for (int i = 0; i < endIndex; i++) {
+                widthList.remove(0);
             }
-            // widthList에서 level에 들어간 원소를 제거, pyramid 리스트에 합 추가
-            int levelSum = 0;
-            for (Integer element : level) {
-                levelSum += element;
-                widthList.remove(element);
-            }
-            pyramid.add(levelSum);
-
         }
 
         // pyramid print
