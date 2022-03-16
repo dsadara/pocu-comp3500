@@ -45,7 +45,7 @@ public class PyramidBuilder {
                 break;
             }
             pyramid.add(endIndex + 1);
-            for (int i = 0; i < endIndex; i++) {
+            for (int i = 0; i <= endIndex; i++) {
                 widthList.remove(0);
             }
         }
