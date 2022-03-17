@@ -8,6 +8,10 @@ import java.util.Comparator;
 
 public class ProfitCalculator {
     public static int findMaxProfit(final Task[] tasks, final int[] skillLevels) {
+        // early return if task is empty
+        if (tasks.length == 0 || tasks == null) {
+            return 0;
+        }
         Comparator<Task> comparator = new Comparator<Task>() {
             @Override
             public int compare(Task o1, Task o2) {
