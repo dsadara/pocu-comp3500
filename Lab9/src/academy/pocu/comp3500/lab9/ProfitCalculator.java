@@ -28,27 +28,41 @@ public class ProfitCalculator {
 
         int sumOfProfit = 0;
         for (int skillLevel : skillLevels) {
-            // find max difficulty task and max profit and Difficulty ratio
             int i = 0;
             int difficulty = tasks[i].getDifficulty();
-            // index 0부터 difficulty를 충족하지 못하면, 이 employee는 아무것도 안시킴
+
+            // index 0에서 difficulty를 충족하지 못하면, 이 employee는 아무것도 안시킴
             if (skillLevel < difficulty)
                 continue;
-            double maxProfitDiffRatio = profitDiffRatio.get(0);
-            int maxProfitDiffRatioIndex = 0;
+
+            // 현재 skillLevel이 감당 가능한 최대 Difficulty  찾기
             int maxDiffIndex = 0;
-            while (i < tasks.length - 1)  {
-                i++;
+            while (i < tasks.length)  {
                 difficulty = tasks[i].getDifficulty();
-                if (skillLevel < difficulty) {
+                if (skillLevel < difficulty) {  // 종료조건: 해당 직원이 해당 task의 difficulty를 감당 못하면
                     break;
                 }
                 maxDiffIndex = i;
-                if (skillLevel >= difficulty && maxProfitDiffRatio < profitDiffRatio.get(i)) {
+                i++;
+            }
+
+            // 최대 Profit Difficulty Ratio 찾기
+            double maxProfitDiffRatio = profitDiffRatio.get(0);
+            int maxProfitDiffRatioIndex = 0;
+            i = 0;
+            while (i < tasks.length) {
+                difficulty = tasks[i].getDifficulty();
+                if (skillLevel < difficulty) {  // 종료조건: 해당 직원이 해당 task의 difficulty를 감당 못하면
+                    break;
+                }
+                if (maxProfitDiffRatio < profitDiffRatio.get(i)) {
                     maxProfitDiffRatio = profitDiffRatio.get(i);
                     maxProfitDiffRatioIndex = i;
                 }
+                i++;
             }
+
+            // 찾은 max값들 비교
             int maxDiff = tasks[maxDiffIndex].getProfit();
             int maxProfit = tasks[maxProfitDiffRatioIndex].getProfit();
             sumOfProfit += maxProfit > maxDiff ? maxProfit : maxDiff;
