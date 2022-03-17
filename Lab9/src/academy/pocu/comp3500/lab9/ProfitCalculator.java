@@ -35,37 +35,28 @@ public class ProfitCalculator {
             if (skillLevel < difficulty)
                 continue;
 
-            // 현재 skillLevel이 감당 가능한 최대 Difficulty  찾기
+            ArrayList<Task> availTasks = new ArrayList<>();
+
+            // 현재 skillLevel이 수행 가능한 tasks들 리스트에 담기
             int maxDiffIndex = 0;
             while (i < tasks.length)  {
                 difficulty = tasks[i].getDifficulty();
                 if (skillLevel < difficulty) {  // 종료조건: 해당 직원이 해당 task의 difficulty를 감당 못하면
                     break;
                 }
-                maxDiffIndex = i;
+                availTasks.add(tasks[i]);
                 i++;
             }
 
-            // 최대 Profit Difficulty Ratio 찾기
-            double maxProfitDiffRatio = profitDiffRatio.get(0);
-            int maxProfitDiffRatioIndex = 0;
-            i = 0;
-            while (i < tasks.length) {
-                difficulty = tasks[i].getDifficulty();
-                if (skillLevel < difficulty) {  // 종료조건: 해당 직원이 해당 task의 difficulty를 감당 못하면
-                    break;
-                }
-                if (maxProfitDiffRatio < profitDiffRatio.get(i)) {
-                    maxProfitDiffRatio = profitDiffRatio.get(i);
-                    maxProfitDiffRatioIndex = i;
-                }
-                i++;
+            // 수행 가능한 task 중 profit이 가장 큰 것 찾기
+            int maxProfit = availTasks.get(0).getProfit();
+            for (i = 0; i < availTasks.size(); i++) {
+                if (maxProfit < availTasks.get(i).getProfit())
+                    maxProfit = availTasks.get(i).getProfit();
             }
 
-            // 찾은 max값들 비교
-            int maxDiff = tasks[maxDiffIndex].getProfit();
-            int maxProfit = tasks[maxProfitDiffRatioIndex].getProfit();
-            sumOfProfit += maxProfit > maxDiff ? maxProfit : maxDiff;
+            // sumOfProfit에 추가
+            sumOfProfit += maxProfit;
         }
         return sumOfProfit;
     }
