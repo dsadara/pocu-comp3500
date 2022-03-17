@@ -12,6 +12,7 @@ public class ProfitCalculator {
         if (tasks.length == 0 || tasks == null) {
             return 0;
         }
+        // tasks difficulty 기준으로 정렬
         Comparator<Task> comparator = new Comparator<Task>() {
             @Override
             public int compare(Task o1, Task o2) {
@@ -30,6 +31,7 @@ public class ProfitCalculator {
             // find max difficulty task and max profit and Difficulty ratio
             int i = 0;
             int difficulty = tasks[i].getDifficulty();
+            // index 0부터 difficulty를 충족하지 못하면, 이 employee는 아무것도 안시킴
             if (skillLevel < difficulty)
                 continue;
             double maxProfitDiffRatio = profitDiffRatio.get(0);
@@ -38,17 +40,15 @@ public class ProfitCalculator {
             while (i < tasks.length - 1)  {
                 i++;
                 difficulty = tasks[i].getDifficulty();
-                if (difficulty <= skillLevel) {
-                    maxDiffIndex = i;
+                if (skillLevel < difficulty) {
+                    break;
                 }
+                maxDiffIndex = i;
                 if (skillLevel >= difficulty && maxProfitDiffRatio < profitDiffRatio.get(i)) {
                     maxProfitDiffRatio = profitDiffRatio.get(i);
                     maxProfitDiffRatioIndex = i;
                 }
-
             }
-//            if (i > 0)
-//                i--;
             int maxDiff = tasks[maxDiffIndex].getProfit();
             int maxProfit = tasks[maxProfitDiffRatioIndex].getProfit();
             sumOfProfit += maxProfit > maxDiff ? maxProfit : maxDiff;
