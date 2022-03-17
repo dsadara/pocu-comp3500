@@ -34,18 +34,22 @@ public class ProfitCalculator {
                 continue;
             double maxProfitDiffRatio = profitDiffRatio.get(0);
             int maxProfitDiffRatioIndex = 0;
-            while (i + 1 < tasks.length && difficulty <= skillLevel) {
+            int maxDiffIndex = 0;
+            while (i < tasks.length - 1)  {
                 i++;
                 difficulty = tasks[i].getDifficulty();
-                if (maxProfitDiffRatio < profitDiffRatio.get(i)) {
+                if (difficulty <= skillLevel) {
+                    maxDiffIndex = i;
+                }
+                if (skillLevel >= difficulty && maxProfitDiffRatio < profitDiffRatio.get(i)) {
                     maxProfitDiffRatio = profitDiffRatio.get(i);
                     maxProfitDiffRatioIndex = i;
                 }
 
             }
-            if (i > 0 && i + 1 != tasks.length)
-                i--;
-            int maxDiff = tasks[i].getProfit();
+//            if (i > 0)
+//                i--;
+            int maxDiff = tasks[maxDiffIndex].getProfit();
             int maxProfit = tasks[maxProfitDiffRatioIndex].getProfit();
             sumOfProfit += maxProfit > maxDiff ? maxProfit : maxDiff;
         }
