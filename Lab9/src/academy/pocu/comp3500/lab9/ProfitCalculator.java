@@ -39,7 +39,7 @@ public class ProfitCalculator {
 
             // 현재 skillLevel이 수행 가능한 tasks들 리스트에 담기
             int maxDiffIndex = 0;
-            while (i < tasks.length)  {
+            while (i < tasks.length) {
                 difficulty = tasks[i].getDifficulty();
                 if (skillLevel < difficulty) {  // 종료조건: 해당 직원이 해당 task의 difficulty를 감당 못하면
                     break;

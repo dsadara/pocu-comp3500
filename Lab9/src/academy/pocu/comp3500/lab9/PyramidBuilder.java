@@ -40,7 +40,7 @@ public class PyramidBuilder {
         // 나머지 돌 쌓기
         while (!widthList.isEmpty()) {
             minStoneNum = pyramid.get(pyramid.size() - 1) + 1;  // 위층의 돌 개수보다 많아야 함
-            endIndex =  minStoneNum - 1;
+            endIndex = minStoneNum - 1;
             if (minStoneNum > widthList.size()) {  // 남아있는 돌의 개수보다, 최소 쌓아야 하는 돌의 개수가더 많으면 쌓지않음
                 break;
             }
