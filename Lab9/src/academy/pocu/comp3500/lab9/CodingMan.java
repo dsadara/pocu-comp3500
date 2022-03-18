@@ -12,7 +12,7 @@ public class CodingMan {
         // time만큼의 원소를 갖는 배열 생성
         if (time == 0)
             return -1;
-        boolean[] timeArray = new boolean[time + 1];
+        boolean[] timeArray = new boolean[time];
 
         int[] occupyTime = new int[clips.length];
         // videoClip에 OccupyTime 변수를 추가하여 boxing
@@ -32,7 +32,7 @@ public class CodingMan {
 
         int minClipNum = 0;
         for (int i = 0; i < videoClipBoxed.length; i++) {
-            for (int j = videoClipBoxed[i].getVideoClip().getStartTime(); j <= videoClipBoxed[i].getVideoClip().getEndTime(); j++) {
+            for (int j = videoClipBoxed[i].getVideoClip().getStartTime(); j < videoClipBoxed[i].getVideoClip().getEndTime(); j++) {
                 timeArray[j] = true;
             }
             minClipNum++;
