@@ -8,7 +8,7 @@ public class VideoClipBoxed {
 
 
     public VideoClipBoxed(VideoClip videoClip, int time) {
-        if (time < videoClip.getEndTime() - 1) {
+        if (time < videoClip.getEndTime()) {
             this.occupyTime = time - videoClip.getStartTime();
             this.videoClip = new VideoClip(videoClip.getStartTime(), time);
         } else {
