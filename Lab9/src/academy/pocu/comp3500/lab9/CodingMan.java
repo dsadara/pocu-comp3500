@@ -51,7 +51,7 @@ public class CodingMan {
                     break;
                 timeArray[j] = true;
             }
-            currPoint = selectedVideoClip.getEndTime() + 1;
+            currPoint = selectedVideoClip.getEndTime();
             clipCount++;
 //            if (clipsBoxed.get(i).getVideoClip().getStartTime() == currPoint) {
 //                nextPoint = clipsBoxed.get(i).getVideoClip().getEndTime();
@@ -69,7 +69,7 @@ public class CodingMan {
 
     public static void findPointIncludingClips(VideoClip[] clips, ArrayList<VideoClip> result, int point) {
         for (VideoClip clip : clips) {
-            if (clip.getStartTime() <= point && point <= clip.getEndTime())
+            if (clip.getStartTime() <= point && point < clip.getEndTime())
                 result.add(clip);
         }
     }
