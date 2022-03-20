@@ -3,13 +3,16 @@ package academy.pocu.comp3500.lab9;
 import academy.pocu.comp3500.lab9.data.VideoClip;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class CodingMan {
-
 
     public static int findMinClipsCount(final VideoClip[] clips, int time) {
         if (time == 0)
             return -1;
+        Comparator<VideoClip> clipComparator = (VideoClip clip1, VideoClip clip2) -> Integer.compare(clip1.getStartTime(), clip2.getStartTime());
+        Arrays.sort(clips, clipComparator);
         int[] lastOccupiedTime = new int[2];
         int currPoint = 0;
         int clipCount = 0;
@@ -31,6 +34,8 @@ public class CodingMan {
 
     public static void findPointIncludingClips(VideoClip[] clips, ArrayList<VideoClip> result, int point) {
         for (VideoClip clip : clips) {
+            if (clip.getStartTime() > point)
+                return;
             if (clip.getStartTime() <= point && point < clip.getEndTime())
                 result.add(clip);
         }
