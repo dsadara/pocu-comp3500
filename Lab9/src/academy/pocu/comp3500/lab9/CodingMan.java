@@ -22,8 +22,8 @@ public class CodingMan {
             findPointIncludingClips(clips, currPointIncludingClip, currPoint);
             if (currPointIncludingClip.isEmpty())   // currPoint를 커버할 클립이 없으면 -1 반환
                 return -1;
-            VideoClip selectedVideoClip = findMaxOccupyClips(currPointIncludingClip, timeArray);
-            for (int j = selectedVideoClip.getStartTime(); j < selectedVideoClip.getEndTime(); j++) {
+            VideoClip selectedVideoClip = findMaxOccupyClips(currPointIncludingClip, timeArray, currPoint);
+            for (int j = currPoint; j < selectedVideoClip.getEndTime(); j++) {
                 if (j > timeArray.length - 1)
                     break;
                 timeArray[j] = true;
@@ -41,12 +41,12 @@ public class CodingMan {
         }
     }
 
-    public static VideoClip findMaxOccupyClips(ArrayList<VideoClip> clips, boolean[] timeArray) {
+    public static VideoClip findMaxOccupyClips(ArrayList<VideoClip> clips, boolean[] timeArray, int currPoint) {
         VideoClip maxOccupyClip = clips.get(0);
         int maxOccupyTime = 0;
         for (VideoClip clip : clips) {
             int occupyTime = 0;
-            for (int i = clip.getStartTime(); i < clip.getEndTime(); i++) {
+            for (int i = currPoint; i < clip.getEndTime(); i++) {
                 if (i > timeArray.length - 1)
                     break;
                 if (!timeArray[i])
