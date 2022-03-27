@@ -2,15 +2,14 @@ package academy.pocu.comp3500.lab10;
 
 import academy.pocu.comp3500.lab10.project.Task;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Project {
     public static List<String> findSchedule(Task[] tasks, boolean includeMaintenance) {
         ArrayList<Task> taskList = new ArrayList<>(Arrays.asList(tasks));
-        ArrayList<String>[] adjMatrix = makeAdjacencyMatrix(taskList);
+        ArrayList<ArrayList<String>> adjMatrix = makeAdjacencyMatrix(taskList);
 //        printAdjacency(adjMatrix, tasks);
-        ArrayList<String>[] trMatrix = transposeAdjacencyMatrix(adjMatrix, taskList);
+        ArrayList<ArrayList<String>> trMatrix = transposeAdjacencyMatrix(adjMatrix, taskList);
 //        printAdjacency(trMatrix, tasks);
         ArrayList<Task> trTaskList = createTransposedTasks(trMatrix, taskList);
 
@@ -23,7 +22,7 @@ public class Project {
         if (includeMaintenance == false) {
             schedule = sortTopologicallyMFalse(trTaskList, stronglyConnectedComponents);
         } else {    // includeMaintenance == true
-            schedule = sortTopologicallyMTrue(trTaskList, stronglyConnectedComponents);
+            schedule = sortTopologicallyMTrue(trTaskList);
 //            for (LinkedList<Task> SCC : stronglyConnectedComponents) {
 //                for (int i = 0; i < schedule.size(); i++) {
 //                    if (SCC.getFirst().getTitle().equals(schedule.get(i))) {
@@ -37,11 +36,15 @@ public class Project {
         return schedule;
     }
 
-    public static ArrayList<String>[] makeAdjacencyMatrix(ArrayList<Task> tasks) {
-        ArrayList<String>[] adjacencyMatrix = new ArrayList[tasks.size()];
+    public static ArrayList<ArrayList<String>> makeAdjacencyMatrix(ArrayList<Task> tasks) {
+        ArrayList<ArrayList<String>> adjacencyMatrix = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
-            adjacencyMatrix[i] = new ArrayList<String>();
+            adjacencyMatrix.add(new ArrayList<String>());
         }
+//        for (int i = 0; i < tasks.size(); i++) {
+//            adjacencyMatrix.get(i).add(new ArrayList<String>());
+//        }
+
         Stack<Task> stack = new Stack<>();
         HashMap<String, Task> discovered = new HashMap<>();
 
@@ -57,14 +60,16 @@ public class Project {
                 for (Task predecessor : next.getPredecessors()) {
                     if (!discovered.containsKey(predecessor.getTitle())) {
                         // add to adjMatrix
-                        adjacencyMatrix[tasks.indexOf(next)].add(predecessor.getTitle());
+//                        adjacencyMatrix[tasks.indexOf(next)].add(predecessor.getTitle());
+                        adjacencyMatrix.get(tasks.indexOf(next)).add(predecessor.getTitle());
 
                         // dfs logic
                         stack.push(predecessor);
                         discovered.put(predecessor.getTitle(), predecessor);
                     } else {    // if predecessor is discovered
                         // just add to adj matrix
-                        adjacencyMatrix[tasks.indexOf(next)].add(predecessor.getTitle());
+//                        adjacencyMatrix[tasks.indexOf(next)].add(predecessor.getTitle());
+                        adjacencyMatrix.get(tasks.indexOf(next)).add(predecessor.getTitle());
                     }
                 }
             }
@@ -85,16 +90,19 @@ public class Project {
 
     }
 
-    public static ArrayList<String>[] transposeAdjacencyMatrix(ArrayList<String>[] adjMatrix, ArrayList<Task> taskList) {
-        ArrayList<String>[] transposedMatrix = new ArrayList[taskList.size()];
-        for (int i = 0; i < adjMatrix.length; i++) {
-            transposedMatrix[i] = new ArrayList<String>();
+    public static ArrayList<ArrayList<String>> transposeAdjacencyMatrix(ArrayList<ArrayList<String>> adjMatrix, ArrayList<Task> taskList) {
+        ArrayList<ArrayList<String>> transposedMatrix = new ArrayList<>();
+        for (int i = 0; i < taskList.size(); i++) {
+            transposedMatrix.add(new ArrayList<String>());
         }
+//        for (int i = 0; i < adjMatrix.length; i++) {
+//            transposedMatrix[i] = new ArrayList<String>();
+//        }
 
 
-        for (int i = 0; i < adjMatrix.length; i++) {
-            for (int j = 0; j < adjMatrix[i].size(); j++) {
-                transposedMatrix[indexOfTitle(taskList, adjMatrix[i].get(j))].add(taskList.get(i).getTitle());
+        for (int i = 0; i < adjMatrix.size(); i++) {
+            for (int j = 0; j < adjMatrix.get(i).size(); j++) {
+                transposedMatrix.get(indexOfTitle(taskList, adjMatrix.get(i).get(j))).add(taskList.get(i).getTitle());
             }
         }
 
@@ -117,13 +125,13 @@ public class Project {
         return -1;
     }
 
-    public static ArrayList<Task> createTransposedTasks(ArrayList<String>[] trMatrix, ArrayList<Task> tasks) {
+    public static ArrayList<Task> createTransposedTasks(ArrayList<ArrayList<String>> trMatrix, ArrayList<Task> tasks) {
         ArrayList<Task> trTasks = new ArrayList<>();
-        for (int i = 0; i < tasks.size(); i++) {
-            trTasks.add(new Task(tasks.get(i).getTitle(), tasks.get(i).getEstimate()));
+        for (Task task : tasks) {
+            trTasks.add(new Task(task.getTitle(), task.getEstimate()));
         }
         for (int i = 0; i < tasks.size(); i++) {
-            for (String matrix : trMatrix[i]) {
+            for (String matrix : trMatrix.get(i)) {
                 trTasks.get(i).addPredecessor(trTasks.get(indexOfTitle(trTasks, matrix)));
             }
         }
@@ -133,7 +141,7 @@ public class Project {
     //  코사라주 알고리즘을 이용하여 Strongly Connected Component들을 찾는 함수
     public static ArrayList<LinkedList<Task>> findSCC(ArrayList<Task> taskList, ArrayList<Task> taskListTranposed) {
         LinkedList<Task> sortedList = sortTopologically(taskListTranposed);
-        ArrayList<LinkedList<Task>> SCCList = new ArrayList<LinkedList<Task>>();
+        ArrayList<LinkedList<Task>> SCCList = new ArrayList<>();
 
         // taskList의 Task로 대체
 //        for (Task task : sortedList) {
@@ -141,9 +149,7 @@ public class Project {
 //            sortedList.remove(task);
 //        }
         LinkedList<Task> sortedListOriginalTask = new LinkedList<>();
-        Iterator<Task> iterator = sortedList.listIterator();
-        while (iterator.hasNext()) {
-            Task task = iterator.next();
+        for (Task task : sortedList) {
             sortedListOriginalTask.add(taskList.get(indexOfTitle(taskList, task.getTitle())));
         }
 
@@ -190,7 +196,7 @@ public class Project {
         schedule.add(0, task.getTitle());
     }
 
-    public static ArrayList<String> sortTopologicallyMTrue(ArrayList<Task> taskListTransposed, ArrayList<LinkedList<Task>> SCCList) {
+    public static ArrayList<String> sortTopologicallyMTrue(ArrayList<Task> taskListTransposed) {
         HashMap<String, Task> discovered = new HashMap<>();
         ArrayList<String> schedule = new ArrayList<>();
 
@@ -199,13 +205,13 @@ public class Project {
                 continue;
             }
 //            if (isInSCCFirstOfList(task, SCCList) || !isInSCCList(task, SCCList)) {
-                topologicalSortMTrueRecursive(task, discovered, schedule, SCCList);
+            topologicalSortMTrueRecursive(task, discovered, schedule);
 //            }
         }
         return schedule;
     }
 
-    public static void topologicalSortMTrueRecursive(Task task, HashMap<String, Task> discovered, ArrayList<String> schedule, ArrayList<LinkedList<Task>> SCCList) {
+    public static void topologicalSortMTrueRecursive(Task task, HashMap<String, Task> discovered, ArrayList<String> schedule) {
         discovered.put(task.getTitle(), task);
 
         for (Task predecessor : task.getPredecessors()) {
@@ -213,7 +219,7 @@ public class Project {
                 continue;
             }
 //            if (isInSCCFirstOfList(predecessor, SCCList) || !isInSCCList(predecessor, SCCList)) {
-                topologicalSortMTrueRecursive(predecessor, discovered, schedule, SCCList);
+            topologicalSortMTrueRecursive(predecessor, discovered, schedule);
 //            }
         }
 
@@ -233,12 +239,12 @@ public class Project {
 
     public static boolean isInSCCFirstOfList(Task predecessor, ArrayList<LinkedList<Task>> SCCList) {
         for (LinkedList<Task> tasks : SCCList) {
-                if (tasks.getFirst().getTitle().equals(predecessor.getTitle()))
-                    return true;
+            if (tasks.getFirst().getTitle().equals(predecessor.getTitle()))
+                return true;
         }
         return false;
     }
-    
+
     public static LinkedList<Task> sortTopologically(ArrayList<Task> taskList) {
         HashMap<String, Task> discovered = new HashMap<>();
         LinkedList<Task> sortedList = new LinkedList<>();
