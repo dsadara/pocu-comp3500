@@ -8,11 +8,13 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 public class SCC {
+    static ArrayList<Task> taskListTranposed;
+
 
     public static ArrayList<LinkedList<Task>> findSCC(ArrayList<Task> taskList) {
         ArrayList<ArrayList<String>> adjMatrix = makeAdjacencyMatrix(taskList);
         ArrayList<ArrayList<String>> trMatrix = transposeAdjacencyMatrix(adjMatrix, taskList);
-        ArrayList<Task> taskListTranposed = createTransposedTasks(trMatrix, taskList);
+        taskListTranposed = createTransposedTasks(trMatrix, taskList);
 
 
         LinkedList<Task> sortedList = sortTopologically(taskListTranposed);

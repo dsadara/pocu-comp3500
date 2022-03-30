@@ -28,6 +28,10 @@ public final class Task {
         }
     }
 
+    public void deletePredecessor(final int index) {
+        predecessors.remove(index);
+    }
+
     public List<Task> getPredecessors() {
         return Collections.unmodifiableList(this.predecessors);
     }
