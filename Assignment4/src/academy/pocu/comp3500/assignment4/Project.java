@@ -4,6 +4,9 @@ import academy.pocu.comp3500.assignment4.project.Task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+
+import static academy.pocu.comp3500.assignment4.SCC.findSCC;
 
 public final class Project {
     private ArrayList<Task> tasks;
@@ -16,8 +19,9 @@ public final class Project {
     private void excludeMaintenanceCycle() {
 
         // find Strongly Connected Component
-
+        ArrayList<LinkedList<Task>> SCCList = findSCC(tasks);
         //
+
     }
 
     public int findTotalManMonths(final String task) {
