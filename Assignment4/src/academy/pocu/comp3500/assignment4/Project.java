@@ -68,7 +68,7 @@ public final class Project {
                     List<Task> predecessors = task.getPredecessors();
                     for (int i = 0; i < predecessors.size(); i++) {
                         if (element.getTitle().equals(predecessors.get(i).getTitle())) {
-                            task.deletePredecessor(i);
+//                            task.deletePredecessor(i);
                             task.getPredecessors().remove(i);
                         }
                     }
