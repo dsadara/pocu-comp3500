@@ -4,8 +4,6 @@ import academy.pocu.comp3500.assignment4.project.Task;
 
 import java.util.*;
 
-import academy.pocu.comp3500.assignment4.SCC;
-
 public final class Project {
     private ArrayList<Task> tasks;
     private ArrayList<Task> trTasks;
@@ -25,12 +23,10 @@ public final class Project {
             for (Task element : SCC) {
                 for (int i = 0; i < tasks.size(); i++) {
                     if (element.getTitle().equals(tasks.get(i).getTitle())) {
-//                        taskArray[i] = null;
                         tasks.remove(i);
                         break;
                     }
                 }
-//                tasks.removeIf(n -> (n.getTitle().equals(task.getTitle())));
             }
         }
         // also remove SCC in transposed tasks
@@ -38,57 +34,91 @@ public final class Project {
             for (Task element : SCC) {
                 for (int i = 0; i < trTasks.size(); i++) {
                     if (element.getTitle().equals(trTasks.get(i).getTitle())) {
-//                        taskArray[i] = null;
                         trTasks.remove(i);
                         break;
                     }
                 }
-//                trTasks.removeIf(n -> (n.getTitle().equals(task.getTitle())));
-            }
-        }
-        // remove SCC element predecessor
-        for (LinkedList<Task> SCC : SCCList) {
-            for (Task element : SCC) {
-                for (Task task : trTasks) {
-//                    ArrayList<Task> predecessors = new ArrayList<>(task.getPredecessors());
-                    List<Task> predecessors = task.getPredecessors();
-                    for (int i = 0; i < predecessors.size(); i++) {
-                        if (element.getTitle().equals(predecessors.get(i).getTitle())) {
-//                            task.deletePredecessor(i);
-                            task.getPredecessors().remove(i);
-                        }
-                    }
-                }
             }
         }
 
-        for (LinkedList<Task> SCC : SCCList) {
-            for (Task element : SCC) {
-                for (Task task : tasks) {
-                    List<Task> predecessors = task.getPredecessors();
-                    for (int i = 0; i < predecessors.size(); i++) {
-                        if (element.getTitle().equals(predecessors.get(i).getTitle())) {
-//                            task.deletePredecessor(i);
-                            task.getPredecessors().remove(i);
+        // replace transposed taskList to new instance without SCC
+        ArrayList<Task> trTasksNoSCC = new ArrayList<>();
+        for (Task task : trTasks) {
+             trTasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
+        }
+        HashMap<String, Task> trTaskHashMap = new HashMap<>();
+        for (Task task : trTasksNoSCC) {
+            trTaskHashMap.put(task.getTitle(), task);
+        }
+
+        ListIterator<Task> trTaskListIterator = trTasks.listIterator();
+        while (trTaskListIterator.hasNext()) {
+            Task task = trTaskListIterator.next();
+            Iterator<Task> predIter = task.getPredecessors().iterator();
+            LinkedList<String> predecessorTitles = new LinkedList<>();
+            while (predIter.hasNext()) {
+                Task pred = predIter.next();
+                predecessorTitles.add(pred.getTitle());
+            }
+            Iterator<String> titleIter = predecessorTitles.iterator();
+            while (titleIter.hasNext()) {
+                String pred = titleIter.next();
+                for (LinkedList<Task> SCC : SCCList) {
+                    for (Task element : SCC) {
+                        if (element.getTitle().equals(pred)) {
+                            titleIter.remove();
                         }
                     }
                 }
             }
+            Task taskNoSCCPred = trTaskHashMap.get(task.getTitle());
+            for (String predecessorTitle : predecessorTitles) {
+                taskNoSCCPred.addPredecessor(trTaskHashMap.get(predecessorTitle));
+            }
         }
+        trTasks = trTasksNoSCC;
+
+        // replace taskList to new instance without SCC
+        ArrayList<Task> tasksNoSCC = new ArrayList<>();
+        for (Task task : tasks) {
+            tasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
+        }
+        HashMap<String, Task> taskHashMap = new HashMap<>();
+        for (Task task : tasksNoSCC) {
+            taskHashMap.put(task.getTitle(), task);
+        }
+
+        ListIterator<Task> taskListIterator = tasks.listIterator();
+        while (taskListIterator.hasNext()) {
+            Task task = taskListIterator.next();
+            Iterator<Task> predIter = task.getPredecessors().iterator();
+            LinkedList<String> predecessorTitles = new LinkedList<>();
+            while (predIter.hasNext()) {
+                Task pred = predIter.next();
+                predecessorTitles.add(pred.getTitle());
+            }
+            Iterator<String> titleIter = predecessorTitles.iterator();
+            while (titleIter.hasNext()) {
+                String pred = titleIter.next();
+                for (LinkedList<Task> SCC : SCCList) {
+                    for (Task element : SCC) {
+                        if (element.getTitle().equals(pred)) {
+                            titleIter.remove();
+                        }
+                    }
+                }
+            }
+            Task taskNoSCCPred = taskHashMap.get(task.getTitle());
+            for (String predecessorTitle : predecessorTitles) {
+                taskNoSCCPred.addPredecessor(taskHashMap.get(predecessorTitle));
+            }
+        }
+        tasks = tasksNoSCC;
+
     }
 
     public int findTotalManMonths(final String task) {
-        // task를 만나면 재귀를 종료하는 위상정렬 실시
         int[] totalManMonth = {0};
-
-//        for (Task node : trTasks) {
-//            if (discovered.containsKey(node.getTitle())) {
-//                continue;
-//            }
-//
-//            topologicalSortRecursive(discovered, node, totalManMonth, task);
-//            discovered.remove(task);
-//        }
 
         Task mileStone = null;
         for (int i = 0; i < tasks.size(); i++) {
@@ -106,13 +136,13 @@ public final class Project {
         HashMap<String, Task> discovered = new HashMap<>();
         while (!stack.isEmpty()) {
             Task next = stack.pop();
-            discovered.put(next.getTitle(), next);
             // visit
             totalManMonth[0] += next.getEstimate();
             List<Task> predecessors = next.getPredecessors();
             for (Task predecessor : predecessors) {
                 if (!discovered.containsKey(predecessor.getTitle())) {
                     stack.push(predecessor);
+                    discovered.put(predecessor.getTitle(), next);
                 }
             }
         }
@@ -147,35 +177,30 @@ public final class Project {
         }
         if (mileStone == null)
             return -1;
-        
+
         List<Task> predecessors = mileStone.getPredecessors();
         HashMap<String, Task> discovered = new HashMap<>();
         int[] duration = {0};
         System.out.println("start");
         for (Task predecessor : predecessors) {
-             duration[0] = mileStone.getEstimate();
+            duration[0] = mileStone.getEstimate();
 
             dfsRecursive(predecessor, duration, maxDuration, discovered);
             System.out.println("duration : " + duration[0]);
-//            if (duration[0] > maxDuration)
-//                maxDuration = duration[0];
         }
-        
+
         return maxDuration[0];
     }
-    
+
     public void dfsRecursive(Task node, int[] duration, int[] maxDuration, HashMap<String, Task> discovered) {
-//        discovered.put(node.getTitle(), node);
         duration[0] += node.getEstimate();
         if (duration[0] > maxDuration[0])
             maxDuration[0] = duration[0];
 
         List<Task> predecessors = node.getPredecessors();
         for (Task predecessor : predecessors) {
-//            if (!discovered.containsKey(predecessor.getTitle())) {
-                dfsRecursive(predecessor, duration, maxDuration, discovered);
-                duration[0] -= predecessor.getEstimate();
-//            }
+            dfsRecursive(predecessor, duration, maxDuration, discovered);
+            duration[0] -= predecessor.getEstimate();
         }
     }
 
