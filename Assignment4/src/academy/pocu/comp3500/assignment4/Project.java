@@ -18,103 +18,115 @@ public final class Project {
         // find Strongly Connected Component
         ArrayList<LinkedList<Task>> SCCList = SCC.findSCC(tasks);
         trTasks = SCC.taskListTranposed;
+
+        // make SCC hashMap
+        HashMap<String, Task> sccHashMap = new HashMap<>();
+        for (LinkedList<Task> SCC : SCCList) {
+            for (Task element : SCC) {
+                sccHashMap.put(element.getTitle(), element);
+            }
+        }
+
         // remove SCC
-        for (LinkedList<Task> SCC : SCCList) {
-            for (Task element : SCC) {
-                for (int i = 0; i < tasks.size(); i++) {
-                    if (element.getTitle().equals(tasks.get(i).getTitle())) {
-                        tasks.remove(i);
-                        break;
-                    }
-                }
-            }
-        }
-        // also remove SCC in transposed tasks
-        for (LinkedList<Task> SCC : SCCList) {
-            for (Task element : SCC) {
-                for (int i = 0; i < trTasks.size(); i++) {
-                    if (element.getTitle().equals(trTasks.get(i).getTitle())) {
-                        trTasks.remove(i);
-                        break;
-                    }
-                }
-            }
+        Iterator<Task> iter = tasks.iterator();
+        while (iter.hasNext()) {
+            Task next = iter.next();
+            if (sccHashMap.containsKey(next.getTitle()))
+                iter.remove();
         }
 
-        // replace transposed taskList to new instance without SCC
-        ArrayList<Task> trTasksNoSCC = new ArrayList<>();
-        for (Task task : trTasks) {
-             trTasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
-        }
-        HashMap<String, Task> trTaskHashMap = new HashMap<>();
-        for (Task task : trTasksNoSCC) {
-            trTaskHashMap.put(task.getTitle(), task);
-        }
+//                for (int i = 0; i < tasks.size(); i++) {
+//                    if (element.getTitle().equals(tasks.get(i).getTitle())) {
+//                        tasks.remove(i);
+//                        break;
+//                    }
+//                }
 
-        ListIterator<Task> trTaskListIterator = trTasks.listIterator();
-        while (trTaskListIterator.hasNext()) {
-            Task task = trTaskListIterator.next();
-            Iterator<Task> predIter = task.getPredecessors().iterator();
-            LinkedList<String> predecessorTitles = new LinkedList<>();
-            while (predIter.hasNext()) {
-                Task pred = predIter.next();
-                predecessorTitles.add(pred.getTitle());
-            }
-            Iterator<String> titleIter = predecessorTitles.iterator();
-            while (titleIter.hasNext()) {
-                String pred = titleIter.next();
-                for (LinkedList<Task> SCC : SCCList) {
-                    for (Task element : SCC) {
-                        if (element.getTitle().equals(pred)) {
-                            titleIter.remove();
-                        }
-                    }
-                }
-            }
-            Task taskNoSCCPred = trTaskHashMap.get(task.getTitle());
-            for (String predecessorTitle : predecessorTitles) {
-                taskNoSCCPred.addPredecessor(trTaskHashMap.get(predecessorTitle));
-            }
-        }
-        trTasks = trTasksNoSCC;
-
-        // replace taskList to new instance without SCC
-        ArrayList<Task> tasksNoSCC = new ArrayList<>();
-        for (Task task : tasks) {
-            tasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
-        }
-        HashMap<String, Task> taskHashMap = new HashMap<>();
-        for (Task task : tasksNoSCC) {
-            taskHashMap.put(task.getTitle(), task);
-        }
-
-        ListIterator<Task> taskListIterator = tasks.listIterator();
-        while (taskListIterator.hasNext()) {
-            Task task = taskListIterator.next();
-            Iterator<Task> predIter = task.getPredecessors().iterator();
-            LinkedList<String> predecessorTitles = new LinkedList<>();
-            while (predIter.hasNext()) {
-                Task pred = predIter.next();
-                predecessorTitles.add(pred.getTitle());
-            }
-            Iterator<String> titleIter = predecessorTitles.iterator();
-            while (titleIter.hasNext()) {
-                String pred = titleIter.next();
-                for (LinkedList<Task> SCC : SCCList) {
-                    for (Task element : SCC) {
-                        if (element.getTitle().equals(pred)) {
-                            titleIter.remove();
-                        }
-                    }
-                }
-            }
-            Task taskNoSCCPred = taskHashMap.get(task.getTitle());
-            for (String predecessorTitle : predecessorTitles) {
-                taskNoSCCPred.addPredecessor(taskHashMap.get(predecessorTitle));
-            }
-        }
-        tasks = tasksNoSCC;
-
+//        // also remove SCC in transposed tasks
+//        for (LinkedList<Task> SCC : SCCList) {
+//            for (Task element : SCC) {
+//                for (int i = 0; i < trTasks.size(); i++) {
+//                    if (element.getTitle().equals(trTasks.get(i).getTitle())) {
+//                        trTasks.remove(i);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        // replace transposed taskList to new instance without SCC
+//        ArrayList<Task> trTasksNoSCC = new ArrayList<>();
+//        for (Task task : trTasks) {
+//             trTasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
+//        }
+//        HashMap<String, Task> trTaskHashMap = new HashMap<>();
+//        for (Task task : trTasksNoSCC) {
+//            trTaskHashMap.put(task.getTitle(), task);
+//        }
+//
+//        ListIterator<Task> trTaskListIterator = trTasks.listIterator();
+//        while (trTaskListIterator.hasNext()) {
+//            Task task = trTaskListIterator.next();
+//            Iterator<Task> predIter = task.getPredecessors().iterator();
+//            LinkedList<String> predecessorTitles = new LinkedList<>();
+//            while (predIter.hasNext()) {
+//                Task pred = predIter.next();
+//                predecessorTitles.add(pred.getTitle());
+//            }
+//            Iterator<String> titleIter = predecessorTitles.iterator();
+//            while (titleIter.hasNext()) {
+//                String pred = titleIter.next();
+//                for (LinkedList<Task> SCC : SCCList) {
+//                    for (Task element : SCC) {
+//                        if (element.getTitle().equals(pred)) {
+//                            titleIter.remove();
+//                        }
+//                    }
+//                }
+//            }
+//            Task taskNoSCCPred = trTaskHashMap.get(task.getTitle());
+//            for (String predecessorTitle : predecessorTitles) {
+//                taskNoSCCPred.addPredecessor(trTaskHashMap.get(predecessorTitle));
+//            }
+//        }
+//        trTasks = trTasksNoSCC;
+//
+//        // replace taskList to new instance without SCC
+//        ArrayList<Task> tasksNoSCC = new ArrayList<>();
+//        for (Task task : tasks) {
+//            tasksNoSCC.add(new Task(task.getTitle(), task.getEstimate()));
+//        }
+//        HashMap<String, Task> taskHashMap = new HashMap<>();
+//        for (Task task : tasksNoSCC) {
+//            taskHashMap.put(task.getTitle(), task);
+//        }
+//
+//        ListIterator<Task> taskListIterator = tasks.listIterator();
+//        while (taskListIterator.hasNext()) {
+//            Task task = taskListIterator.next();
+//            Iterator<Task> predIter = task.getPredecessors().iterator();
+//            LinkedList<String> predecessorTitles = new LinkedList<>();
+//            while (predIter.hasNext()) {
+//                Task pred = predIter.next();
+//                predecessorTitles.add(pred.getTitle());
+//            }
+//            Iterator<String> titleIter = predecessorTitles.iterator();
+//            while (titleIter.hasNext()) {
+//                String pred = titleIter.next();
+//                for (LinkedList<Task> SCC : SCCList) {
+//                    for (Task element : SCC) {
+//                        if (element.getTitle().equals(pred)) {
+//                            titleIter.remove();
+//                        }
+//                    }
+//                }
+//            }
+//            Task taskNoSCCPred = taskHashMap.get(task.getTitle());
+//            for (String predecessorTitle : predecessorTitles) {
+//                taskNoSCCPred.addPredecessor(taskHashMap.get(predecessorTitle));
+//            }
+//        }
+//        tasks = tasksNoSCC;
     }
 
     public int findTotalManMonths(final String task) {
@@ -168,7 +180,6 @@ public final class Project {
 //    }
 
     public int findMinDuration(final String task) {
-        int[] maxDuration = {0};
         Task mileStone = null;
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).getTitle().equals(task)) {
@@ -180,7 +191,8 @@ public final class Project {
 
         List<Task> predecessors = mileStone.getPredecessors();
         HashMap<String, Task> discovered = new HashMap<>();
-        int[] duration = {0};
+        int[] duration = {mileStone.getEstimate()};
+        int[] maxDuration = {mileStone.getEstimate()};
         System.out.println("start");
         for (Task predecessor : predecessors) {
             duration[0] = mileStone.getEstimate();
