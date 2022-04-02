@@ -18,7 +18,7 @@ public class SCC {
 
 
         LinkedList<Task> sortedList = sortTopologically(taskListTranposed);
-        ArrayList<LinkedList<Task>> SCCList = new ArrayList<>();
+        ArrayList<LinkedList<Task>> sccList = new ArrayList<>();
 
 
         LinkedList<Task> sortedListOriginalTask = new LinkedList<>();
@@ -32,13 +32,13 @@ public class SCC {
             if (discovered.containsKey(task.getTitle())) {
                 continue;
             }
-            LinkedList<Task> SCCElement = new LinkedList<>();
-            topologicalSortRecursive(task, discovered, SCCElement);
-            if (SCCElement.size() > 1)
-                SCCList.add(SCCElement);
+            LinkedList<Task> sccElement = new LinkedList<>();
+            topologicalSortRecursive(task, discovered, sccElement);
+            if (sccElement.size() > 1)
+                sccList.add(sccElement);
         }
 
-        return SCCList;
+        return sccList;
     }
 
     public static ArrayList<ArrayList<String>> makeAdjacencyMatrix(ArrayList<Task> tasks) {
