@@ -14,9 +14,11 @@ import java.util.List;
 public final class Project {
     private ArrayList<Task> tasks;
     private ArrayList<Task> trTasks;
+    private Task[] taskArray;
 
     public Project(final Task[] tasks) {
-        this.tasks = new ArrayList<Task>(Arrays.asList(tasks));
+        this.taskArray = tasks;
+//        this.tasks = new ArrayList<Task>(Arrays.asList(tasks));
 //        excludeMaintenanceCycle(tasks);
     }
 
@@ -140,9 +142,9 @@ public final class Project {
         int[] totalManMonth = {0};
 
         Task mileStone = null;
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getTitle().equals(task)) {
-                mileStone = tasks.get(i);
+        for (int i = 0; i < taskArray.length; i++) {
+            if (taskArray[i].getTitle().equals(task)) {
+                mileStone = taskArray[i];
             }
         }
         if (mileStone == null)
@@ -188,9 +190,9 @@ public final class Project {
 
     public int findMinDuration(final String task) {
         Task mileStone = null;
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getTitle().equals(task)) {
-                mileStone = tasks.get(i);
+        for (int i = 0; i < taskArray.length; i++) {
+            if (taskArray[i].getTitle().equals(task)) {
+                mileStone = taskArray[i];
             }
         }
         if (mileStone == null)
